@@ -1,0 +1,15 @@
+.layout_main {
+  height: 100%;
+}
+.layout_cont {
+  height: 93%;
+}
+.content_switch {
+  padding: 0px,24px;
+  /*padding: 33px;*/
+  background: #fff;
+  min-height:500px;
+  /*height: 95%;*/
+  /*padding-top: 33px;*/
+
+}
