@@ -2,6 +2,7 @@ import React, {Component}  from 'react';
 import {Table} from 'antd';
 import { Button, Icon,Popconfirm,message,DatePicker,Select,Input,TreeSelect,Dropdown, } from 'antd';
 import {ajaxUtil} from '../../../util/AjaxUtils';
+import uuid from "node-uuid";
 const {RangePicker} = DatePicker;
 const {Option} = Select;
 const {Search} =Input;
@@ -226,7 +227,7 @@ class Sjdhbd extends Component {
                         <DatePicker  placeholder="开始时间" onChange={this.onStartChange}/>
                         <DatePicker  placeholder="结束时间" onChange={this.onEndChange}/>
                           <Button type="primary" onClick={this.reflash}>查询</Button>
-                        <Table columns={this.state.columns}  loading={this.state.loading} dataSource= {this.state.data}   pagination={this.state.pagination} onChange={this.handleTableChange} />
+                        <Table rowKey={()=>uuid.v1()} columns={this.state.columns}  loading={this.state.loading} dataSource= {this.state.data}   pagination={this.state.pagination} onChange={this.handleTableChange} />
                 </div>
             );
     }

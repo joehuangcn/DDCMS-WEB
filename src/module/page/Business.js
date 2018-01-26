@@ -76,7 +76,7 @@ import Tabs from '../../component/ManagePanel/Tabs';
     //  console.log("router 获得的 props-------",this.props);
     //  const {state}=this.props.location;
        const {config,permission} = this.state;
-      //  console.log(config);
+       console.log(config);
        return (
            <div className="body-content" style={{height:'100%'}}>
                <Tabs config={config} permission={permission}/>

@@ -1,6 +1,7 @@
 import React,{Component} from 'react'
 import { Table,Tabs,Input, Button,Icon,Select,DatePicker,Form } from 'antd';
 import {ajaxUtil} from '../../util/AjaxUtils';
+import uuid from "node-uuid";
 const Search = Input.Search;
 const InputGroup = Input.Group;
 const Option = Select.Option;
@@ -139,7 +140,7 @@ class AccessAudit extends Component {
             />
             <Button onClick={this.reflash}><Icon type="sync" />刷新</Button>
       </div>
-      <Table columns={columns}  loading={this.state.loading} dataSource={this.state.data}  onChange={this.handleTableChange} pagination={this.state.pagination}/>
+      <Table rowKey={()=>uuid.v1()} columns={columns}  loading={this.state.loading} dataSource={this.state.data}  onChange={this.handleTableChange} pagination={this.state.pagination}/>
     </div>)
   }
 }

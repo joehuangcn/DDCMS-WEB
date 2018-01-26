@@ -194,7 +194,7 @@ class DiffList extends Component {
       const {auditTypeList,auditScopeList,dataTypeList,diffTypeList,companyList,netList} =this.state;
     return (
       <div>
-      <Button type='primary' onClick={this.handleModal} disabled={this.state.addBtnPermiss}>新增</Button>
+      <Button type='primary' onClick={this.handleModal} disabled={this.props.addBtnPermiss}>新增</Button>
       <Button  onClick={this.fetch}><Icon type="sync" />刷新</Button>
       <Select  placeholder="稽核类型" style={{ width: 120, textAlign: 'right'  }} onChange={this.handleAuditTypeChange} allowClear={true}>
         {auditTypeList.map(d=> <Option key={d.dicCode} value={d.dicCode}>{d.dicName}</Option>)}

@@ -143,7 +143,7 @@ renderStatus=(value)=>{
     const data=[];
     data.push(record);
     return (
-      <Table  key={uuid.v1()}
+      <Table  rowKey={() =>uuid.v1()}
       columns={secondColumns}
        dataSource={data}
        pagination={false}

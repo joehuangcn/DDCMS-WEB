@@ -157,13 +157,9 @@ class ToolBar extends Component {
         return (
             <Row style={{background: '#fff', margin: '0 0 0 0'}}>
               <PwdChange ref={(ref) => this.pwdbiz=ref } />
-                <Col span={8}>
-                    <Row type="flex" justify="start" style={{padding: '5px 0 0 15px'}}>
-                        <Breadcrumb>
-                            <Breadcrumb.Item><Link to="/main">HOME</Link></Breadcrumb.Item>
-                            <Breadcrumb.Item>Bill</Breadcrumb.Item>
-                        </Breadcrumb>
-                    </Row>
+              <Col span={8}>
+              <Row type="flex" justify="start" style={{padding: '5px 0 0 15px'}}>
+                     </Row>
                 </Col>
                 <Col span={16}>
                     <Row type="flex" justify="end">
@@ -191,13 +187,6 @@ class ToolBar extends Component {
                       </MenuItemGroup>
                   </SubMenu>
               </Menu>
-              <style>{`
-                   .ant-menu-submenu-horizontal > .ant-menu {
-                       width: 200px;
-                       left: -100px;
-                   }
-
-               `}</style>
                </div>
                     </Row>
                 </Col>

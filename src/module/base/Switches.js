@@ -20,6 +20,7 @@ import NetBeanMes from "../page/netBean/NetBeanMes";
 import DataOrder from "../page/dataOrder/DataOrder";
 import DataSourceMg from "../page/dataSource/DataSourceMg";
 import DataGatherCondition from "../page/dataSource/DataGatherCondition";
+import DataGatherRule from "../page/dataSource/DataGatherRule";
 import SysConfig from "../page/sysConfig/SysConfig";
 import ModelManage from "../page/modelManage/ModelManage";
 import DepartmentManagement from "../page/DepartmentMmanagement/DepartmentManagement";
@@ -38,11 +39,17 @@ import WholeNetBus from "../page/standardAuditTools/WholeNetBus"
 import BookManage from "../page/BookManage/BookManage";
 import BookType from "../page/BookType/BookType";
 import NoticeMg from "../page/NoticeMg/NoticeMg";
-import Sjdhbd from "../page/Sjdhbd/Sjdhbd";
-import Cyzs from "../page/Cyzs/Cyzs";
-import Xhssjb from "../page/Xhssjb/Xhssjb";
+import Sjdhbd from "../page/otherPlantFormBiz/Sjdhbd";
+import Cyzs from "../page/otherPlantFormBiz/Cyzs";
+import Xhssjb from "../page/otherPlantFormBiz/Xhssjb";
 import SftpFile from "../page/standardAuditTools/SftpFile";
 import WorkOrder from "../page/workOrder/WorkOrder";
+import DataFlow from "../page/standardAuditTools/DataFlow";
+import DealWith from "../page/sysAlarmDeal/DealWith";
+import Level from "../page/sysAlarmDeal/Level";
+import Monitor from "../page/sysAlarmDeal/Monitor";
+import AuditProgressInfo from "../page/logInfo/AuditProgressInfo";
+import AuditProgressMain from "../page/AuditProgressMain";
 const Home = () => (
     <div>
         <h2>Home</h2>
@@ -100,6 +107,13 @@ class Switches extends Component{
                 <Route path="/Xhssjb" component={Xhssjb}/>
                 <Route path="/SftpFile"  component={SftpFile} />
                 <Route path="/WorkOrder" component={WorkOrder} />
+                <Route path="/DataFlow" component={DataFlow} />
+                <Route path="/DealWith" component={DealWith} />
+                <Route path="/Level" component={Level} />
+                <Route path="/DataGatherRule" component={DataGatherRule} />
+                <Route path="/Monitor" component={Monitor} />
+                <Route path="/AuditProgressInfo" component={AuditProgressInfo} />
+                <Route path="/AuditProgressMain" component={AuditProgressMain} />
             </Switch>
         );
     }

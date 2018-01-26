@@ -1,14 +1,17 @@
 import React, {Component}  from 'react';
 import {Table} from 'antd';
-import { Button, Icon,Popconfirm,message,DatePicker,Select,Input,TreeSelect } from 'antd';
+import { Button, Icon,Popconfirm,message,DatePicker,Select,Input,TreeSelect,ColorPicker } from 'antd';
 import {ajaxUtil} from '../../../util/AjaxUtils';
-import NoticeItem from './NoticeItem';
+import LevItem from "./LevItem";
 const {RangePicker} = DatePicker;
 const {Option} = Select;
 const {Search} =Input;
 const SHOW_CHILD=TreeSelect.SHOW_CHILD
 
-class NoticeMg extends Component {
+// var Colr = require('colr');
+// var ColorPicker = require('react-colorpicker');
+
+class Level extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -19,15 +22,19 @@ class NoticeMg extends Component {
             endDate:'',
             query:'',
             queryKey:'',
+            addBtnPermiss:false,
             permission:[],
-
+            // displayColorPicker: false,
         };
-
+        // this.handleClick = this.handleClick.bind(this);
     }
+
+      handleClick=()=> {
+          this.newbiz.show();
+      }
     componentWillMount() {
         this.getInitProps(this.props);
         this.getDynAction();
-        // this.loadTreeNode();
     }
     componentDidMount=() => {
         this.fetch();
@@ -52,57 +59,64 @@ class NoticeMg extends Component {
        });
      }
 
-
     getDynAction =() => {
-        const columns=[{
-            title: '公告标题',
-            dataIndex: 'title',
-            key: 'title',
-        },{
-            title:'公告内容',
-            dataIndex:'content',
-            key:'content',
-        },{
-            title:'发布时间',
-            dataIndex:'pubTime',
-            key:'pubTime',
-        },{
-            title:'发布者',
-            dataIndex:'publisher',
-            key:'publisher',
+        const columns=[
+          { title: '告警级别名称',  dataIndex: 'levName',  key: 'levName',},
+          {title:'告警颜色',dataIndex:'colorValue',  key:'colorValue',render:(text) =>(this.renderColer(text))},
+          {title:'图片路径',  dataIndex:'imgPath',key:'imgPath',},
+          {  title:'告警级别',dataIndex:'thLev',  key:'thLev',
         },];
-        let action ={
-            title:'操作',
-            key:'action',
-            render : (text, record) =>{
-              let permission=this.state.permission;
-              let edit='inline';let deletes='inline';
-              let activeDis=false; let activeColor="green";
-              if(permission.indexOf('edit')===-1){
-                  edit='none'
-              }
-              if (permission.indexOf('del')===-1) {
-                deletes='none'
-              }
 
-              return (
-                  <span>
-                  <a  style={{display:edit}} onClick = {() => {this.newbiz.showModal("edit",record);}}>修改</a>
-                    <span className="ant-divider"/>
-                        <Popconfirm title="你确定要删除该条记录?" okText="是" cancelText="否" onConfirm={() => {
-                        ajaxUtil("urlencoded","notice!del.action","nid="+record.nid,this,(data,that) => {
-                            this.fetch();
-                        })
-                    }}>
-                        <a style={{color:'red',display:deletes}} >删除</a>
-                        </Popconfirm>
-                    </span>
-         )
-       }
+        let action ={
+          title:'操作',
+          key:'action',
+          render : (text, record) => {
+            let permission=this.state.permission;
+            let edit='inline';let deletes='inline';
+            let activeDis=false; let activeColor="green";
+            if(permission.indexOf('edit')===-1){
+                edit='none'
+            }
+            if (permission.indexOf('del')===-1) {
+              deletes='none'
+            }
+            return(
+            <span>
+             <a  style={{display:edit}} onClick = {() => {
+               this.newbiz.showModal("edit",record);
+             }}>修改</a>
+             <span className="ant-divider"/>
+             <Popconfirm title="你确定要删除该记录?" okText="是" cancelText="否" disabled onConfirm={() => {
+               ajaxUtil("urlencoded","threshlev!delObj.action","levId="+record.levId,this,(data,that) => {
+                 let status=data.success;
+                 let message= data.message;
+                   if (status==='true') {
+                     message.success(message);
+                   }else {
+                     message.error(message);
+                    }
+                    this.fetch()
+                   }
+               )
+             }}>
+             <a style={{color:'red',display:deletes}}>删除</a>
+             </Popconfirm>
+            </span>
+          )
+        }
         };
         columns.push(action);
         this.setState({columns});
     }
+
+    renderColer =(text)=>{
+      if (text!=="") {
+        return <div style={{backgroundColor:"#"+text}}>{text}</div>;
+      }else{
+        return text;
+      }
+    }
+
     handleTableChange = (pagination, filters, sorter) => {
         const pager = {...this.state.pagination};
         pager.current=pagination.current;
@@ -125,7 +139,7 @@ class NoticeMg extends Component {
         if (params.page>1) {
             page=(params.page-1)*10;
         }
-        let sort='notice.pubTime';
+        let sort='threshLev.levName';
         if (typeof(params.sortField) !== "undefined" ) {
             sort=params.sortField;
         }
@@ -142,7 +156,7 @@ class NoticeMg extends Component {
             +"&sort="+sort
             +"&start="+page+"&limit=10";
 
-        ajaxUtil("urlencoded","notice!getNoticeList.action",text,this,(data,that) => {
+        ajaxUtil("urlencoded","threshlev!getLevList.action",text,this,(data,that) => {
             const pagination = that.state.pagination;
             pagination.total = parseInt(data.total,10);
             this.setState({
@@ -153,18 +167,13 @@ class NoticeMg extends Component {
         });
     }
 
-    handleModal= () => {
-        this.newbiz.show();
-    }
+    // handleModal= () => {
+    //     this.newbiz.show();
+    // }
     reflash=() => {
         this.fetch();
     }
 
-
-    cowConfirm = (e) =>{
-        console.log("e",e);
-          ajaxUtil("urlencoded","notice!getNoticeList.action","id",)
-    }
     onStartChange =(date, dateString) => {
         this.setState({startDate:dateString});
     }
@@ -179,30 +188,22 @@ class NoticeMg extends Component {
         this.setState({queryKey:value},()=>{this.fetch});
     }
 
-    // loadTreeNode =() =>{
-    //     ajaxUtil("urlencoded","notice!getNoticeList.action","",this,(data,that) =>{
-    //         this.setState({treeData:data});
-    //     });
-    // }
-    // treeChange = (value) => {
-    // }
-
     render(){
-      const {addBtnPermiss}=this.state;
         return(
             <div>
-                <Button type='primary' onClick={this.handleModal}  disabled={addBtnPermiss} ><Icon type="plus" />新增</Button>
+              <Button  type='primary' onClick={ this.handleClick} disabled={this.state.addBtnPermiss}>新增</Button>
                 <Button  onClick={this.reflash}><Icon type="sync" />刷新</Button>
                 <Select style={{ width: 120 }} onChange={this.onSelectChange}  allowClear placeholder="选择查询字段">
-                  <Option value="Title">公告标题</Option>
+                  <Option value="levName">告警级别名称</Option>
+                  <Option value="colorValue">告警颜色</Option>
                 </Select>
                 <Search  placeholder="输入查询值"   style={{ width: 120 }}  onSearch={this.handleSearch} />
-                 <Table columns={this.state.columns}  loading={this.state.loading} dataSource= {this.state.data}   pagination={this.state.pagination} onChange={this.handleTableChange} />
-                <NoticeItem  ref={(ref) => this.newbiz=ref }/>
+                 <Table rowKey="levId" columns={this.state.columns}  loading={this.state.loading} dataSource= {this.state.data}   pagination={this.state.pagination} onChange={this.handleTableChange} />
+                 <LevItem  ref={(ref) => this.newbiz=ref } refresh={this.fetch}/>
             </div>
         );
     }
 
 }
 
-export default NoticeMg;
+export default Level;

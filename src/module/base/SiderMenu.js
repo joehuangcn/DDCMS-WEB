@@ -22,7 +22,7 @@ class SiderMenu extends Component {
 
     componentWillReceiveProps(props){
       // 因为需要根据传递key 来更新左侧选择的高亮,所以直接在这里面获取传递进来的location.
-    console.log("得到 receive------",props);
+    // console.log("得到 receive------",props);
     const {mode}=props;
     // if (props.location.pathname==='/business') {
     //   this.setState({selectedKeys:props.location.state.id});
@@ -53,7 +53,10 @@ class SiderMenu extends Component {
 
     findMemuTree=(data,name) => {
       let id='';
-      for (let item of data) {
+      for (var i = 0; i < data.length; i++) {
+            let item =data[i];
+      // }
+      // for (let item of data) {
         if (item.router===name) {
           id=item.id;
           break;

@@ -543,7 +543,7 @@ class MesDetail extends Component {
     super(props);
     this.state = {
     visible:false,
-    record:[],
+    record:{},
     };
   }
 
@@ -557,9 +557,18 @@ class MesDetail extends Component {
     this.setState({visible:false});
   }
 
+   MyComponent=(text)=> {
+    return <div dangerouslySetInnerHTML={{__html: text}} />;
+  }
+
 
   render() {
     const { visible, confirmLoading,record}= this.state;
+
+    if (record.dealResult) {
+      record.dealResult=record.dealResult.replace(/\&lt;/g,"<").replace(/\&gt;/g,'/>');
+    }
+
     return(
       <div>
        <Modal key={uuid.v1()} visible={visible} onCancel={this.handleCancel}
@@ -573,7 +582,7 @@ class MesDetail extends Component {
         </div>
         <div>
         <Divider>工单处理进度</Divider>
-          <span>{record.dealResult}</span>
+          {this.MyComponent(record.dealResult)}
         </div>
         </div>
        </Modal>

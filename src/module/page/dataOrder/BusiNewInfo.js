@@ -1,6 +1,7 @@
 import React,{Component} from 'react'
-import { Form, Input,Modal ,Select,Row,Col,Radio,Divider} from 'antd';
+import { Form, Input,Modal ,Select,Row,Col,Radio,Divider,Checkbox,message} from 'antd';
 import { ajaxUtil} from '../../../util/AjaxUtils';
+import uuid from 'node-uuid';
 const FormItem = Form.Item;
 const {Option} = Select;
 
@@ -13,17 +14,22 @@ const needAuditList = [
   {dicCode:'N',dicName:'不需要'},
   {dicCode:'Y',dicName:'需要'},
 ];
-const operTypeList = [
-  {dicCode:'A',dicName:'新增'},
-  {dicCode:'D',dicName:'删除'},
-  {dicCode:'U',dicName:'更新'},
-  {dicCode:'W',dicName:'全量'}
+const operNumList = [
+  {fieldCode:'0',fieldName:'剔除手机号码'},
+  {fieldCode:'1',fieldName:'剔除固定号码'},
 ];
+
+const selectCityList=[
+  {fieldCode:'0',fieldName:'手机号码'},
+  {fieldCode:'1',fieldName:'固定号码'},
+]
+
 class  DiffInfoModal extends Component {
   constructor(props) {
     super(props);
     this.state={
-      netList:props.netList
+      netList:props.netList,
+      choiceWay:props.choiceWay,
     }
   }
   componentWillReceiveProps(nextProps){
@@ -39,21 +45,32 @@ class  DiffInfoModal extends Component {
     });
   }
 
+  handleCityChoose=(value) =>{
+      if (value==='1') {
+          this.setState({choiceWay:'true'})
+        }else{
+            this.setState({choiceWay:'false'})
+        }
+  }
 
   handleRenderTab=(type,formItemLayout,label,name,required,initValue,SourceList,rows,info) =>{
     const {getFieldDecorator} = this.props.form;
     let renderSome;
     switch (type) {
       case 'input':
-              renderSome=<Input placeholder="请输入"/>
+              renderSome=<Input placeholder={info===''?'请输入':info}/>
         break;
         case 'select':
-              renderSome= <Select  placeholder="请选择" >
-                              {SourceList.map(d=> <Option key={d.dicCode} value={d.dicCode}>{d.dicName}</Option>)}
+              renderSome= <Select  placeholder="请选择" allowClear >
+                              {SourceList.map(d=> <Option key={d.fieldCode} value={d.fieldCode}>{d.fieldName}</Option>)}
                           </Select>
           break;
-          case 'textarea':
-              renderSome= <Input placeholder={info} type="textarea"  rows={rows}/>;
+        case 'textarea':
+              renderSome= <Input placeholder={info} type="textarea"  rows={rows}/>;break;
+        case 'checkbox':
+                renderSome=<Checkbox>{info}</Checkbox>
+          break;
+
       default:break;
     }
     return (
@@ -86,14 +103,16 @@ class  DiffInfoModal extends Component {
      </FormItem>
    );
   }
-
+  //  {this.handleRenderTab("checkbox",inputFormItemLayout,"","removeBlack",false,record.removeBlack,[],0,'去除空格')}
+ // {this.handleRenderTab("checkbox",inputFormItemLayout,"","removeLineBreak",false,record.removeLineBreak,[],0,'去除换行符')}
+ //  {this.handleRenderTab("select",inputFormItemLayout,"地市字段选择","cityConfirmField",false,record.cityConfirmField,busNetList,0,'')}
   render() {
     const {getFieldDecorator} = this.props.form;
-    const {netList}=this.state;
+    const {netList,choiceWay}=this.state;
     const {record,action,bizList,deptList,auditTypeList,auditScopeList,taskTypeList,dataTypeList,diffTypeList,companyList,busNetList} =this.props;
     const inputFormItemLayout = {
-      labelCol: { span: 8 },
-      wrapperCol: { span: 16 },
+      labelCol: { span: 10 },
+      wrapperCol: { span: 14 },
     };
     const mutiItemLayout = {
       labelCol: { span: 10 },
@@ -144,6 +163,79 @@ class  DiffInfoModal extends Component {
               {this.handleRenderTab("input",inputFormItemLayout,"转码命令","transcoding",false,record.transcoding,[],0,'')}
             </Col>
             </Row>
+             <Divider>预处理详细配置</Divider>
+             <Row gutter={4}>
+             <Col span={12}>
+             <FormItem {...formItemLayout } label="">
+              {getFieldDecorator('removeBlack',{
+                rules:[],
+                valuePropName: 'checked',
+                initialValue:record.removeBlack==='true'?true:false
+              })(
+                <Checkbox>去除空格</Checkbox>
+             )}
+             </FormItem>
+             </Col>
+             <Col span={12}>
+             <FormItem {...formItemLayout } label="">
+              {getFieldDecorator('removeLineBreak',{
+                rules:[],
+                valuePropName: 'checked',
+                initialValue:record.removeLineBreak==='true'?true:false
+              })(
+                <Checkbox>去除换行符</Checkbox>
+             )}
+             </FormItem>
+             </Col>
+             </Row>
+             <Row gutter={4}>
+             <Col span={12}>
+             {this.handleRenderTab("input",inputFormItemLayout,"空字段转换","emptyTrans",false,record.emptyTrans,[],0,'')}
+             </Col>
+             <Col span={12}>
+               {this.handleRenderTab("input",inputFormItemLayout,"字段顺序转换","dataRankRule",false,record.dataRankRule,[],0,'')}
+             </Col>
+             </Row>
+             <Row gutter={2}>
+             <Col span ={8}>
+              {this.handleRenderTab("select",inputFormItemLayout,"地市字段选择","cityConfirmField",false,record.cityConfirmField,busNetList,0,'')}
+             </Col>
+
+             <Col span ={8}>
+             <FormItem {...mutiItemLayout } label="地市更新类型">
+              {getFieldDecorator('cityConfirmType',{
+                rules:[],
+                initialValue:record.cityConfirmType===undefined?'':record.cityConfirmType
+              })(
+                <Select  placeholder="请选择" style={{ width: 120 }} allowClear onChange={this.handleCityChoose}>
+                  {selectCityList.map(d=> <Option key={d.fieldCode} value={d.fieldCode}>{d.fieldName}</Option>)}
+                </Select>
+             )}
+             </FormItem>
+             </Col>
+             <Col span ={8} style={{display: choiceWay==='true'? 'block' : 'none'}}>
+                {this.handleRenderTab("input",inputFormItemLayout,"","updateCityOffset",false,record.updateCityOffset,[],0,'地市字段偏移量')}
+             </Col>
+             </Row>
+             <Row gutter={2}>
+             <Col span ={8}>
+                {this.handleRenderTab("select",inputFormItemLayout,"号码处理字段","phoneConfirmField",false,record.phoneConfirmField,busNetList,0,'')}
+             </Col>
+             <Col span ={8}>
+                {this.handleRenderTab("select",inputFormItemLayout,"号码处理情况","phoneNumSelect",false,record.phoneNumSelect,operNumList,0,'')}
+             </Col>
+             <Col span={8}>
+             <FormItem {...formItemLayout } label="">
+              {getFieldDecorator('removePrefix',{
+                rules:[],
+                valuePropName: 'checked',
+                initialValue:record.removePrefix==='true'?true:false
+              })(
+                <Checkbox>去除86/+86</Checkbox>
+             )}
+             </FormItem>
+             </Col>
+             </Row>
              <Divider>记录级校验</Divider>
             <Row gutter={2}>
             <Col span ={8}>
@@ -184,7 +276,7 @@ class  DiffInfoModal extends Component {
             <Divider>数据整理规则</Divider>
             <Row gutter={4}>
             <Col span ={12}>
-              {this.handleRenderTab("input",formItemLayout,"去缀名规则","removeRegulars",true,record.removeRegulars,[],0,'')}
+              {this.handleRenderTab("input",formItemLayout,"去缀名规则","removeRegulars",false,record.removeRegulars,[],0,'')}
                 </Col>
               <Col span ={12}>
               {this.handleRenderMutiSelect(mutiItemLayout,"去重规则","removeColumns",false,record.removeColumns,busNetList)}
@@ -211,11 +303,15 @@ class BusiNewInfo extends Component{
   }
 
   show = () => {
+    if (this.props.bizCode==='') {
+      message.warn("请先选择业务记录");
+    }else{
     this.setState({
       visible:true,
       record:[],
       action:'add'
     });
+  }
   }
   showModal =(action,record) => {
     const text="bizCode="+this.props.bizCode+"&dataScope="+record.dataScope;
@@ -240,9 +336,10 @@ class BusiNewInfo extends Component{
       if (err) {
         return;
       }
-      this.setState({
-        confirmLoading:true,
-      });
+      // this.setState({
+      //   confirmLoading:true,
+      // });
+
       let bid=this.state.record.id?this.state.record.id:'';
       const text="bizcode="+this.props.bizCode
       +"&name="+values.name
@@ -259,8 +356,20 @@ class BusiNewInfo extends Component{
       +"&checkCount="+values.checkCount
       +"&removeRegulars="+values.removeRegulars
       +"&removeColumns="+values.removeColumns
+
+      +"&removeBlack="+values.removeBlack
+      +"&removeLineBreak="+values.removeLineBreak
+      +"&emptyTrans="+values.emptyTrans
+      +"&dataRankRule="+values.dataRankRule
+      +"&updateCityOffset="+values.updateCityOffset
+      +"&cityConfirmField="+(values.cityConfirmField?values.cityConfirmField:'')
+      +"&cityConfirmType="+(values.cityConfirmType?values.cityConfirmType:'')
+      +"&phoneNumSelect="+(values.phoneNumSelect?values.phoneNumSelect:'')
+      +"&phoneConfirmField="+(values.phoneConfirmField?values.phoneConfirmField:'')
+      +"&removePrefix="+values.removePrefix
       +"&id="+bid
       +"&act="+this.state.action;
+        console.log(values,text);
       ajaxUtil("urlencoded","file-format-manager!save.action",text,this,(data,that) => {
         let status=data.success;
         let message= data.message;
@@ -269,7 +378,7 @@ class BusiNewInfo extends Component{
           visible: false,
           confirmLoading: false,
         });
-          this.form.resetFields();
+          // this.form.resetFields();
           if (status==='true') {
             Modal.success({
              title: '消息',
@@ -292,7 +401,7 @@ class BusiNewInfo extends Component{
     const {auditScopeList,bizCode,busNetList}=this.props;
     return(
       <div className="modal test">
-       <Modal  visible={visible} onOk={this.handleOk} onCancel={this.handleCancel}
+       <Modal key={uuid.v1()} visible={visible} onOk={this.handleOk} onCancel={this.handleCancel}
               title="编辑" confirmLoading={confirmLoading} okText="保存" cancelText='取消' width={750}>
               <DiffForm ref={(ref) => this.form = ref} bizCode={bizCode} record={this.state.record} action={this.state.action}
                auditScopeList={auditScopeList}   netList={this.state.netList}

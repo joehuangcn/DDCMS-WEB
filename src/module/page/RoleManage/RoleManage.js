@@ -49,13 +49,18 @@ class RoleManage extends Component {
        ajaxUtil("urlencoded","permiss!getUserBtnPermissByResid.action","resid="+state.id, this,(data,that)=>{
          permission=data.data;
          let addBtnPermiss=false;
+         let setPerm=false;
          if (permission.indexOf('add')==-1) {
            addBtnPermiss=true;
+         }
+         if (permission.indexOf('setPerm')==-1) {
+           setPerm=true;
          }
          this.setState({
            id:state.id,
            permission:permission,
-           addBtnPermiss:addBtnPermiss
+           addBtnPermiss:addBtnPermiss,
+           setPerm:setPerm,
          });
        });
      }
@@ -209,7 +214,7 @@ class RoleManage extends Component {
      }
 
     render(){
-      const {selectedRowKeys,selectedTreeKeys}=this.state;
+      const {selectedRowKeys,selectedTreeKeys,setPerm,addBtnPermiss}=this.state;
       const rowSelection ={
        selectedRowKeys,
        onChange: this.onSelectChange,
@@ -218,17 +223,21 @@ class RoleManage extends Component {
 
         return(
             <div>
-                <Button type='primary' onClick={this.handleModal} >新增</Button>
-                <Button type="primary" onClick={this.showSetUpModal}>权限设置</Button>
+                <Row>
+                  <Col span={6}>
+                <Button type='primary' onClick={this.handleModal}  disabled={addBtnPermiss} >新增</Button>
+                <Button type="primary" onClick={this.showSetUpModal}  disabled={setPerm}>权限设置</Button>
                 <Button onClick={this.reflash}><Icon type="sync" />刷新</Button>
-                <div style={{float:"right"}}>
+                  </Col>
+                <Col span={18} style={{ textAlign: 'right',}}>
                     <span style={{fontSize:"14px",marginRight:"8px"}}>查询:</span>
-                    <Select style={{ width: 120 }} onChange={this.onSelectChange}  allowClear placeholder="请选择查询类型">
+                    <Select style={{ width: 120,marginLeft: 8 }} onChange={this.onSelectChange}  allowClear placeholder="请选择查询类型">
                         <Option value="moduleName">模块名称</Option>
                         <Option value="moduleState">模块状态</Option>
                     </Select>
-                    <Search  placeholder="输入查询值" style={{ width: 120 }} onSearch={this.handleSearch} />
-                </div>
+                    <Search  placeholder="输入查询值"  style={{ width: 200, marginLeft: 16}}  onSearch={this.handleSearch} />
+                  </Col>
+                </Row>
                 <Table rowKey="role_id"  rowSelection={rowSelection} columns={this.state.columns}  loading={this.state.loading} dataSource= {this.state.data}
                        pagination={this.state.pagination} onChange={this.handleTableChange} />
                 <NewAddRole  ref={(ref) => this.newbiz=ref } reflash={this.reflash}/>

@@ -1,12 +1,12 @@
 import React,{Component} from 'react';
 import { Button, Icon,Popconfirm,message,DatePicker,Select,Input,TreeSelect,Table,Modal } from 'antd';
 import {ajaxUtil} from '../../../util/AjaxUtils';
-import NetBeanNewInfo from './NetBeanNewInfo';
+import DataGatherRuleNew from "./DataGatherRuleNew";
 const {RangePicker} = DatePicker;
 const {Option} = Select;
 const {Search} =Input;
-
-class NetBeanMes extends Component {
+// ---------------------采集规则配置----------------------------------
+class DataGatherRule extends Component {
   constructor(props){
     super(props);
     this.state={
@@ -16,10 +16,6 @@ class NetBeanMes extends Component {
       pagination:{pageSize:10},
       id:'',
       permission:[],
-      bizJoinTypeList:[],
-      auditTypeList:[],
-      query:'',
-      queryKey:'',
     };
   }
 
@@ -56,11 +52,9 @@ class NetBeanMes extends Component {
   // 渲染工作
   setHead=() =>{
     const columns =[
-        { title:'网元名称', dataIndex:'netEleName' , key:'netEleName',sorter: true},
-        { title:'网元编码', dataIndex:'netEleCode' , key:'netEleCode',},
-        { title:'SP名称', dataIndex:'spName' ,sorter: true, key:'spName'},
-        { title:'网元描述', dataIndex:'des' , key:'des'},
-        { title:'网元状态', dataIndex:'statu' , key:'statu',render:(text) =>(this.renderStatu(text))},
+        { title:'采集规则名', dataIndex:'ruleName' , key:'ruleName'},
+        { title:'网元名称', dataIndex:'bneName' , key:'bneName'},
+        { title:'业务编码', dataIndex:'bizCode' , key:'bizCode'},
     ];
 
 
@@ -91,7 +85,7 @@ class NetBeanMes extends Component {
          }}>修改</a>
          <span className="ant-divider"/>
          <Popconfirm title="你确定要删除该记录?" okText="是" cancelText="否" disabled onConfirm={() => {
-           ajaxUtil("urlencoded","netelement!del.action","id="+record.netEleCode,this,(data,that) => {
+           ajaxUtil("urlencoded","data-gather-rule!delDSRbyID.action","id="+record.id,this,(data,that) => {
              let status=data.success;
              let message= data.message;
                if (status==='true') {
@@ -116,10 +110,18 @@ class NetBeanMes extends Component {
   }
 
   renderStatu=(text) =>{
-    if (text==='0') {
-      return(<p style={{color:'red'}}>失效</p>)
-    }else{
-        return (<p style={{color:'green'}}>激活</p>)
+    switch (text) {
+      case 'L':
+        return "远程文件采集方式";
+        break;
+        case "D":
+          return "数据库连接方式";
+          break;
+          case "F":
+            return "文件导入方式";
+            break;
+      default:return "";
+
     }
   }
 
@@ -131,23 +133,10 @@ class NetBeanMes extends Component {
     if (params.page>1) {
       page=(params.page-1)*10;
     }
-    let sort='netEleName';
-    if (typeof(params.sortField) !== "undefined" ) {
-      sort=params.sortField;
-    }
-    let dir='ASC';
-    if (typeof(params.sortOrder) !== "undefined" ) {
-      dir=(params.sortOrder=="descend"?"desc":"asc");
-    }
     const {config} = this.props;
     const {query,queryKey}=this.state;
-    const text="query="+(query==undefined?"":query)
-    +"&queryKey="+(queryKey==undefined?"":queryKey)
-    +"&dir="+dir
-    +"&sort="+sort
-    +"&start="+page+"&limit=10";
-
-    ajaxUtil("urlencoded","netelement!getJsonList.action",text,this,(data,that) => {
+    const text="start="+page+"&limit=10";
+    ajaxUtil("urlencoded","data-gather-rule!getGatherRuleList.action",text,this,(data,that) => {
       const pagination = that.state.pagination;
       pagination.total = parseInt(data.total,10);
       this.setState({
@@ -181,38 +170,20 @@ class NetBeanMes extends Component {
   handleModal= () =>{
     this.newbiz.show();
   }
-  handelSeChange=(value) =>{
-    this.setState({queryKey:value});
-  }
-  handleSearch=(value) =>{
-    this.setState({query:value},()=>{
-      this.fetch()
-    });
-    // this.fetch();
-    }
-
   render() {
     const{bizJoinTypeList,auditTypeList}=this.state;
     return(
       <div>
       <Button type='primary' onClick={this.handleModal} disabled={this.state.addBtnPermiss}>新增</Button>
       <Button  onClick={this.refresh}><Icon type="sync" />刷新</Button>
-      <Select placeholder="条件选择" style={{ width: 120 }} onChange={this.handelSeChange} allowClear={true}>
-          <Option value="netEleName">网元名称</Option>
-          <Option value="netEleCode">网元编码</Option>
-      </Select>
-     <Search
-      placeholder="输入查询值"
-      style={{ width: 140 }}
-      onSearch={this.handleSearch} />
-    <Table rowKey='netEleCode' columns={this.state.columns}  loading={this.state.loading} dataSource={this.state.data}
+    <Table rowKey='id' columns={this.state.columns}  loading={this.state.loading} dataSource={this.state.data}
      onChange={this.handleTableChange} pagination={this.state.pagination} size="middle"/>
-    <NetBeanNewInfo ref={(ref) => this.newbiz=ref }
-       refresh={()=>this.refresh()} />
+    <DataGatherRuleNew ref={(ref) => this.newbiz=ref }
+       refresh={()=>this.refresh()} resid={this.state.id}/>
     </div>
     );
   }
 
 }
 
-export default NetBeanMes;
+export default DataGatherRule;

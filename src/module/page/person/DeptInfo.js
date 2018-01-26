@@ -28,14 +28,23 @@ class DeptInfo extends Component {
      let permission=[];
      ajaxUtil("urlencoded","permiss!getUserBtnPermissByResid.action","resid="+state.id, this,(data,that)=>{
        permission=data.data;
-       let addBtnPermiss=false;
+       let addBtnPermiss=false; let resetPwd=false; let setRole=false;
        if (permission.indexOf('add')==-1) {
          addBtnPermiss=true;
        }
+       if (permission.indexOf('resetPwd')==-1) {
+         resetPwd=true;
+       }
+       if (permission.indexOf('setRole')==-1) {
+         setRole=true;
+       }
+
        this.setState({
          id:state.id,
          permission:permission,
-         addBtnPermiss:addBtnPermiss
+         addBtnPermiss:addBtnPermiss,
+         resetPwd:resetPwd,
+         setRole:setRole,
        });
      });
    }
@@ -44,7 +53,7 @@ class DeptInfo extends Component {
     this.setState({node});
   }
   render(){
-    const {permission,id,addBtnPermiss}=this.state;
+    const {permission,id,addBtnPermiss,resetPwd,setRole}=this.state;
     return(
       <div style={{ background: '#ECECEC'}}>
       <Row gutter={16}>
@@ -55,7 +64,8 @@ class DeptInfo extends Component {
         </Col>
         <Col span={18}>
           <Card title="用户列表">
-             <PersonInfo node={this.state.node} permission={permission} resid={id} addBtnPermiss={addBtnPermiss}/>
+             <PersonInfo node={this.state.node} permission={permission} resid={id} addBtnPermiss={addBtnPermiss}
+                    resetPwd={resetPwd} setRole={setRole}/>
            </Card>
         </Col>
         </Row>
@@ -347,13 +357,14 @@ setDept=()=>{
      hideDefaultSelections:true,
      onChange: this.onSelectChange,
    };
+
     return(
       <div>
       <PersonChoiceDept ref={(ref) => this.depbiz=ref } refresh={()=>this.refresh()} userId={selectedRowKeys}/>
       <Button type='primary' disabled={this.props.addBtnPermiss} onClick={this.handleModal} ><Icon type="user-add" />新增</Button>
       <Button  onClick={this.refresh}><Icon type="sync" />刷新</Button>
-      <Button  onClick={this.defaultPwd}><Icon type="safety" />重置密码</Button>
-      <Button  onClick={this.setDept}><Icon type="team" />设置角色</Button>
+      <Button  onClick={this.defaultPwd} disabled={this.props.resetPwd} ><Icon type="safety" />重置密码</Button>
+      <Button  onClick={this.setDept} disabled={this.props.setRole} ><Icon type="team" />设置角色</Button>
       <Button  onClick={this.reflash}><Icon type="sync" />导出</Button>
       <Select style={{ width: 120 }} onChange={this.handleConditionChange}  allowClear placeholder="选择查询字段">
         <Option value="p.userName">用户名称</Option>

@@ -25,7 +25,7 @@ class DiffConfig extends Component {
        ajaxUtil("urlencoded","permiss!getUserBtnPermissByResid.action","resid="+state.id, this,(data,that)=>{
          permission=data.data;
          let addBtnPermiss=false;
-         if (permission.indexOf('add')!==-1) {
+         if (permission.indexOf('add')===-1) {
            addBtnPermiss=true;
          }
          this.setState({
@@ -42,7 +42,7 @@ class DiffConfig extends Component {
      }
 
     render() {
-        const {auditTypeList,auditScopeList,dataTypeList,bizCode,bizName,permission,tableData,tableInfo} =this.state;
+        const {auditTypeList,auditScopeList,dataTypeList,bizCode,bizName,permission,tableData,tableInfo,addBtnPermiss} =this.state;
         let titleOne="业务差异列表("+this.state.bizName+")";
       return (
         <div className="diffconfig_main" style={{ background: '#ECECEC'}}>
@@ -54,7 +54,7 @@ class DiffConfig extends Component {
           </Col>
           <Col span={16}>
             <Card title={titleOne}  style={{minHeight:500}}>
-                <DiffList permission={permission} bizCode={bizCode} />
+                <DiffList permission={permission} bizCode={bizCode}  addBtnPermiss={addBtnPermiss}/>
              </Card>
           </Col>
           </Row>

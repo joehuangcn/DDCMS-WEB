@@ -36,7 +36,7 @@ class ModelManage extends Component {
        ajaxUtil("urlencoded","permiss!getUserBtnPermissByResid.action","resid="+state.id, this,(data,that)=>{
          permission=data.data;
          let addBtnPermiss=false;
-         if (permission.indexOf('add')==-1) {
+         if (permission.indexOf('add')===-1) {
            addBtnPermiss=true;
          }
          this.setState({
@@ -190,7 +190,7 @@ class ModelManage extends Component {
                     </Select>
                     <Search
                         placeholder="输入查询值"
-                        style={{ width: 120 }}
+                        style={{ width: 200 }}
                         onSearch={this.handleSearch} />
 
                 <Table rowKey='id' columns={this.state.columns}  loading={this.state.loading} dataSource= {this.state.data}

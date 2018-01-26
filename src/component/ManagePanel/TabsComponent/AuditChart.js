@@ -89,7 +89,7 @@ class  AuditChart extends Component {
     return(
       <div>
       <SearchBut ref={(ref) => this.form = ref} handleSearch={this.handleSearch} handleReset={this.handleReset}  citys={this.state.citys}/>
-      <ComposedChart width={800} height={400} data={data}
+      <ComposedChart width={1000} height={400} data={data}
           margin={{top: 20, right: 20, bottom: 20, left: 20}}>
         <XAxis dataKey="name"/>
         <YAxis unit="%"/>

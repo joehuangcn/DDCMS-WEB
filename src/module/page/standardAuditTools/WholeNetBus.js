@@ -4,8 +4,8 @@ import {ajaxUtil} from '../../../util/AjaxUtils';
 import OneStepDetailTable from './OneStepDetailTable'
 import MonthStepTable from './MonthStepTable'
 const TabPane = Tabs.TabPane;
-// ----------------------------总体稽核报表页面-----------------------------------------------
-class  DataAuditReportTotal extends Component {
+// ----------------------------全网增值业务页面-----------------------------------------------
+class  WholeNetBus extends Component {
   constructor(props) {
     super(props);
     this.state={
@@ -65,4 +65,4 @@ class  DataAuditReportTotal extends Component {
       );
     }
 }
-export default DataAuditReportTotal;
+export default WholeNetBus;

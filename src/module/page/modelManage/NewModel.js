@@ -55,7 +55,7 @@ handleSelectParentCode=(value, label, extra) =>{
                     </FormItem>
                     <FormItem {...formItemLayout } label="模块路径">
                         {getFieldDecorator('module.url',{
-                            rules:[{ required:true, message:'模块路径',}],
+                            rules:[],
                             initialValue:record.url===undefined?"":record.url
                         })(
                             <Input placeholder="请输入模块路径" />
@@ -80,7 +80,7 @@ handleSelectParentCode=(value, label, extra) =>{
                             initialValue:record.treenodetype==undefined?'':record.treenodetype
                         })(
                             <Select placeholder="请选择" >
-                                <Option value="L">目录</Option>
+                                <Option value="D">目录</Option>
                                 <Option value="F">文件</Option>
                             </Select>
                         )}
@@ -162,15 +162,19 @@ class NewAddModel extends Component {
             let bid=this.state.record.id?this.state.record.id:'';
 
             const text="module.name="+values.module.name
-                +"&module.url="+values.module.url
                 +"&module.treenodetype="+values.module.treenodetype
                 +"&module.displayOrder="+values.module.displayOrder
                 +"&module.menuRouter="+values.module.menuRouter
+                +"&module.url="+(values.module.url.replace(/\&/g,"%26"))
                 +"&act="+this.state.action
                 +"&module.mid="+bid
                 +"&module.parentCode="+values.module.parentCode
                 +"&module.statu="+values.module.statu
                 +"&parentName="+values.module.parentname;
+                // let url="module.url="+values.module.url;
+                // let some=[];some.push(text);some.push(url);
+                // values.module.mid=bid;
+                // values.act=this.state.action;
             ajaxUtil("urlencoded","moduleAction!saveObj.action",text,this,(data,that) => {
                 let status=data.success;
                 let message= data.message;
