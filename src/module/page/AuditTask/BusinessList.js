@@ -36,7 +36,6 @@ class BusinessList extends Component {
   }
   // 初始化
   getInitProps=(props)=>{
-   //  console.log(props);
      const {state}=props.location;
      let permission=[];
      ajaxUtil("urlencoded","permiss!getUserBtnPermissByResid.action","resid="+state.id, this,(data,that)=>{
@@ -135,7 +134,6 @@ class BusinessList extends Component {
 
   // 请求查询method
   fetch = ( params ={} ) => {
-    console.log('params',params);
     this.setState({loading:true}) ;
     let page=0;
     if (params.page>1) {

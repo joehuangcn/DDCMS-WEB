@@ -24,7 +24,6 @@ class NewAuditInfo extends Component{
     this.setState({loading:true});
     ajaxUtil("urlencoded","audit-stat!getNewAuditInfoForMain.action","",this,(data,that) => {
       let auditInfo=data.data;
-      console.log('auditInfo',auditInfo);
       this.setState({
         auditTime:auditInfo.auditTime,
         auditType:auditInfo.auditType,

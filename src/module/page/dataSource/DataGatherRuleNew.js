@@ -124,19 +124,17 @@ class  DataGatherInfoModal extends Component {
   handleSelectWay=(value)=>{
     this.setState({choiceWay:value});
     ajaxUtil("urlencoded","data-source-config!getDataSourceConfig.action","flag="+value,this,(data,that) => {
-        // console.log(data);
+
         this.setState({configList:data.data});
     });
     ajaxUtil("urlencoded","data-gather-conditions!getDataSourceConfigList.action","flag="+value,this,(data,that) => {
-        // console.log(data);
+
         this.setState({conditonList:data.data});
     });
   }
 
   onSelectChange=(value) =>{
-    console.log(value);
     const {configList,choiceWay}=this.state;
-    console.log(configList);
     let some={};
     for (var i = 0; i < configList.length; i++) {
       if (configList[i].id===value) {
@@ -165,7 +163,6 @@ class  DataGatherInfoModal extends Component {
   }
   next=()=> {
     const values=this.props.form.getFieldsValue();
-    console.log("json -dataSource",values);
     let text="dataType="+values.dataType+"&dbname="+values.dbname+"&dhost="+values.dhost+"&dpaaword="+values.dpassword
               +"&dport="+values.dport+"&dscname="+values.dscname+"&dusername="+values.dusername+"&dway="+values.dway
               +"&filePath="+values.filePath+"&gatherway="+values.gatherway+"&lhost="+values.lhost+"&localway="+values.localway
@@ -409,11 +406,11 @@ class DataGatherRuleNew extends Component{
             this.setState({netList:data.data});
         });
         ajaxUtil("urlencoded","data-source-config!getDataSourceConfig.action","",this,(data,that) => {
-            // console.log(data);
+
             this.setState({configList:data.data});
         });
         ajaxUtil("urlencoded","data-gather-conditions!getDataSourceConfigList.action","",this,(data,that) => {
-            // console.log(data);
+          
             this.setState({conditonList:data.data});
         });
     }

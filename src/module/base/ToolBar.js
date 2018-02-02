@@ -31,7 +31,6 @@ class ToolBar extends Component {
 
   logout=() =>{
     ajaxUtil("urlencoded","person!logout.action","",this,(data,that)=>{
-      console.log('data',data);
     });
   }
   help=() =>{
@@ -47,7 +46,6 @@ class ToolBar extends Component {
      return response.blob();
     }
   ).then((responseJson) => {
-    console.log("-----进入response",responseJson);
     var a = document.createElement('a');
       var url = window.URL.createObjectURL(responseJson);
       a.href = url;
@@ -64,7 +62,6 @@ class ToolBar extends Component {
   }
 
   readOne=(id) =>{
-    console.log(id);
     let text="messageBean.status=2&messageBean.id="+id;
     ajaxUtil("urlencoded","message!updateStatus.action",text,this,(data,that)=>{
         this.getMes();

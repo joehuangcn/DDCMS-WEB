@@ -107,8 +107,6 @@ class NewBizAuditRule extends Component {
         if (err) {
           return;
         }
-        console.log("----values",values);
-
         this.setState({
           confirmLoading:true,
         });

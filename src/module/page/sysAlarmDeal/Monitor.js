@@ -22,14 +22,14 @@ class Monitor extends Component {
         <Row>
         <Col>
           <Card title='稽核记录吞吐量' >
-          <SimpleChart  url="monitor!getTaskHandlingCapacityChartData.action"  detail="执行次数"/>
+          <SimpleChart  url="monitor!getTaskHandlingCapacityChartDataNew.action"  detail="执行次数"/>
           </Card>
           </Col>
         </Row>
         <Row>
         <Col>
         <Card  title='数据文件'>
-          <SimpleChart url="monitor!getFileLogChartData.action" detail="失败次数"/>
+          <SimpleChart url="monitor!getFileLogChartDataNew.action" detail="失败次数"/>
           </Card>
           </Col>
         </Row>
@@ -52,18 +52,18 @@ class TwoLineChart extends Component {
   }
 
   fetch=()=>{
-    const data = [
-      {'name': '2018-01-16', "执行次数": 4000, "失败次数": 2400},
-      {'name': '2018-01-17', "执行次数": 3000, "失败次数": 1398},
-      {'name': '2018-01-18', "执行次数": 2000, "失败次数": 9800, },
-      {'name': '2018-01-19', "执行次数": 2780, "失败次数": 3908, },
-      {'name': '2018-01-20', "执行次数": 1890, "失败次数": 4800,},
-    ];
-    this.setState({data:data});
+    // const data = [
+    //   {'name': '2018-01-16', "执行次数": 4000, "失败次数": 2400},
+    //   {'name': '2018-01-17', "执行次数": 3000, "失败次数": 1398},
+    //   {'name': '2018-01-18', "执行次数": 2000, "失败次数": 9800, },
+    //   {'name': '2018-01-19', "执行次数": 2780, "失败次数": 3908, },
+    //   {'name': '2018-01-20', "执行次数": 1890, "失败次数": 4800,},
+    // ];
+    // this.setState({data:data});
 
-    // ajaxUtil("urlencoded","monitor!getDateCountChartDataNew.action","",this,(data,that)=> {
-    //   this.setState({data:data.message});
-    // });
+    ajaxUtil("urlencoded","monitor!getDateCountChartDataNew.action","",this,(data,that)=> {
+      this.setState({data:data.message});
+    });
   }
 
   render() {
@@ -100,19 +100,19 @@ class SimpleChart extends Component {
   }
 
   fetch=()=>{
-    const data = [
-      {'name': '2018-01-16', "执行次数": 4000, "失败次数": 2400},
-      {'name': '2018-01-17', "执行次数": 3000, "失败次数": 1398},
-      {'name': '2018-01-18', "执行次数": 2000, "失败次数": 9800, },
-      {'name': '2018-01-19', "执行次数": 2780, "失败次数": 3908, },
-      {'name': '2018-01-20', "执行次数": 1890, "失败次数": 4800,},
-    ];
-    this.setState({data:data});
+    // const data = [
+    //   {'name': '2018-01-16', "执行次数": 4000, "失败次数": 2400},
+    //   {'name': '2018-01-17', "执行次数": 3000, "失败次数": 1398},
+    //   {'name': '2018-01-18', "执行次数": 2000, "失败次数": 9800, },
+    //   {'name': '2018-01-19', "执行次数": 2780, "失败次数": 3908, },
+    //   {'name': '2018-01-20', "执行次数": 1890, "失败次数": 4800,},
+    // ];
+    // this.setState({data:data});
       const {url}=this.props;
-      console.log(url);
-    // ajaxUtil("urlencoded","monitor!getDateCountChartDataNew.action","",this,(data,that)=> {
-    //   this.setState({data:data.message});
-    // });
+      // console.log(url);
+    ajaxUtil("urlencoded",url,"",this,(data,that)=> {
+      this.setState({data:data.message});
+    });
   }
 
   render() {

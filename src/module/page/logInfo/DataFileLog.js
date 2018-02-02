@@ -26,7 +26,7 @@ class ActionLogInfo extends Component{
   }
 
   getDynColumnHead =() =>{
-    // console.log(dynColumns);
+
     const firtColumns =[
       {title: '创建时间',dataIndex: 'operateTime', key: 'operateTime',width:160},
       {title: '文件名',dataIndex: 'opperlog',key: 'opperlog',width:150},
@@ -80,7 +80,7 @@ class ActionLogInfo extends Component{
      if (err) {
        return;
      }
-     console.log(values);
+
      let query=values.query===undefined?"":values.query;
      let queryKey=values.queryKey===undefined?'':values.queryKey;
      this.setState({query,queryKey},()=>{this.fetch()});
@@ -108,7 +108,6 @@ handleTableChange = (pagination, filters, sorter) => {
 }
 
  onSelectChange = (selectedRowKeys) => {
-    console.log('selectedRowKeys changed: ', selectedRowKeys);
     this.setState({ selectedRowKeys });
   }
 

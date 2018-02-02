@@ -22,7 +22,6 @@ class SiderMenu extends Component {
 
     componentWillReceiveProps(props){
       // 因为需要根据传递key 来更新左侧选择的高亮,所以直接在这里面获取传递进来的location.
-    // console.log("得到 receive------",props);
     const {mode}=props;
     // if (props.location.pathname==='/business') {
     //   this.setState({selectedKeys:props.location.state.id});
@@ -44,9 +43,9 @@ class SiderMenu extends Component {
     }
 
     getMenuList() {
-        // console.log('=====进入list');
+
       ajaxUtil("urlencoded","module!getLeftMenu.action","parentCode=0&statu=1",this,(data,that) => {
-        // console.log(data);
+
         this.setState({menu:data});
       });
     }
@@ -89,8 +88,6 @@ class SiderMenu extends Component {
     }
 
 onClick=({ item, key, keyPath })=>{
-  // console.log(item);
-  // console.log('onClick key------',key);
   // ReactDOM.unmountComponentAtNode(document.getElementById('ant-layout'));
   // console.log(keyPath);
   // this.setState({selectedKeys:key});
@@ -99,7 +96,6 @@ onClick=({ item, key, keyPath })=>{
     render() {
       const {menu} =this.state;
       let some=this.renderMemuTree(menu);
-      // console.log(some);
       let logo_style = {
           zIndex: '01',
           height: '50px',

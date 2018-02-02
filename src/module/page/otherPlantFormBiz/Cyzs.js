@@ -145,7 +145,6 @@ class Cyzs extends Component {
     //   }
 
     download=(result,value,record) =>{
-      console.log(result);
       let text="result="+result+" &datatime="+record.datatime+"&citycode="+record.citycode;
       window.location.href="/DDCMS/audit-rule!loadXLS.action?"+text;
     }
@@ -166,7 +165,7 @@ class Cyzs extends Component {
     }
 
     fetch = ( params ={} ) => {
-        console.log('params',params);
+
         this.setState({loading:true}) ;
         let page=0;
         if (params.page>1) {
@@ -199,7 +198,7 @@ class Cyzs extends Component {
     }
 
     exportMes=(e)=>{
-        console.log(e);
+
         const {config,permission} = this.props;
         const {startDate,endDate}=this.state;
         let text="startDate="+startDate

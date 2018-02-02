@@ -37,7 +37,7 @@ class AuditRuleList extends Component{
 
   // 初始化
   getInitProps=(props)=>{
-   //  console.log(props);
+
      const {state}=props.location;
      let permission=[];
      ajaxUtil("urlencoded","permiss!getUserBtnPermissByResid.action","resid="+state.id, this,(data,that)=>{
@@ -63,7 +63,6 @@ class AuditRuleList extends Component{
 
 
   getDynColumnHead =() =>{
-    // console.log(dynColumns);
     const firtColumns =[
       {title: '业务代码',dataIndex: 'businessCode', key: 'businessCode',width:150},
       {title: '业务名称',dataIndex: 'businessName', key: 'businessName',width:150},
@@ -173,7 +172,6 @@ class AuditRuleList extends Component{
      if (err) {
        return;
      }
-     console.log(values);
      let startDate=values.startDate===undefined||values.startDate==null?'':values.startDate.format('YYYY-MM-DD');
      let endDate=values.endDate===undefined||values.endDate==null?'':values.endDate.format('YYYY-MM-DD');
      let bizCodeParams=values.bizCodeParam===undefined?'':values.bizCodeParam;
@@ -202,7 +200,6 @@ handleTableChange = (pagination, filters, sorter) => {
 }
 
 exportMes=(e)=>{
-  console.log(e);
    const {config,permission} = this.state;
    let synId='';
    let downflag='';
@@ -241,7 +238,6 @@ exportMes=(e)=>{
  }
 
  onSelectChange = (selectedRowKeys) => {
-    console.log('selectedRowKeys changed: ', selectedRowKeys);
     this.setState({ selectedRowKeys });
   }
   // 打开新建窗口

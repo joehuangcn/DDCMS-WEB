@@ -77,7 +77,6 @@ class  DataGatherInfoModal extends Component {
   }
   next=()=> {
     const values=this.props.form.getFieldsValue();
-    console.log("json -dataSource",values);
     let text="dataType="+values.dataType+"&dbname="+values.dbname+"&dhost="+values.dhost+"&dpaaword="+values.dpassword
               +"&dport="+values.dport+"&dscname="+values.dscname+"&dusername="+values.dusername+"&dway="+values.dway
               +"&filePath="+values.filePath+"&gatherway="+values.gatherway+"&lhost="+values.lhost+"&localway="+values.localway

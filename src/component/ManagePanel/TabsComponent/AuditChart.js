@@ -5,7 +5,11 @@ import {ajaxUtil} from '../../../util/AjaxUtils';
 import {ComposedChart, Line, Area, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend,PieChart, Pie,Cell} from 'recharts';
 const FormItem=Form.Item;
 const Option = Select.Option;
-
+const showGenerMap=[
+  {key:'YZL_RATE',value:'整体一致率'},
+  {key:'BOSS_YZL_RATE',value:'以BOSS为准一致率'},
+  {key:'FLAT_YZL_RATE',value:'以平台为准一致率'},
+]
 class  AuditChart extends Component {
   constructor(props) {
     super(props);
@@ -15,7 +19,8 @@ class  AuditChart extends Component {
       queryCity:'',
       startDate:'',
       endDate:'',
-      typeChange:''
+      typeChange:'',
+      config:props.config,
     }
   }
 
@@ -25,17 +30,19 @@ class  AuditChart extends Component {
 
   handleFocus() {
    ajaxUtil("urlencoded","constant!getCityCodeEntryAllList.action","",this,(data,that)=>{
-     console.log(data);
+
      this.setState({citys:data.data});
    });
   }
   componentDidMount(){
-    // console.log('OK');
     this.fetch();
   }
 
   componentWillReceiveProps(props){
-    this.handleReset();
+    if (props.config.bizCode!== this.state.config.bizCode) {
+      this.setState({config:props.config});
+      this.handleReset();
+    }
   }
 
   fetch=()=>{
@@ -75,20 +82,32 @@ class  AuditChart extends Component {
      if (err) {
        return;
      }
-     console.log("----values",values);
-     let queryCity=values.citys===undefined?'':values.citys;
+     let queryCity=values.queryCity===undefined?'':values.queryCity;
      let startDate=values.startDate===undefined||values.startDate==null?'':values.startDate.format('YYYY-MM-DD');
      let endDate=values.endDate===undefined||values.endDate==null?'':values.endDate.format('YYYY-MM-DD');
      let typeChange=values.typeChange===undefined?'':values.typeChange;
      this.setState({queryCity,startDate,endDate,typeChange},()=>{this.fetch()});
   })
 }
+renderName=() =>{
+  const {typeChange}=this.state;
+  if (typeChange===''|| typeChange==='YZL_RATE') {
+    return "整体一致率";
+  }else if(typeChange ==="BOSS_YZL_RATE"){
+    return "以BOSS为准一致率";
+  }else if(typeChange ==="FLAT_YZL_RATE") {
+    return "以平台为准一致率";
+  }
+  return "";
+}
 
   render() {
     const {citys,data}=this.state;
+    const title=this.renderName();
     return(
       <div>
       <SearchBut ref={(ref) => this.form = ref} handleSearch={this.handleSearch} handleReset={this.handleReset}  citys={this.state.citys}/>
+      <span style={{textAlign: 'middle'}}>{title}</span>
       <ComposedChart width={1000} height={400} data={data}
           margin={{top: 20, right: 20, bottom: 20, left: 20}}>
         <XAxis dataKey="name"/>
@@ -140,6 +159,15 @@ class AuditChartSearch  extends Component{
             )}
           </FormItem>
           </Col>
+          <Col span={4} >
+           <FormItem {...formItemLayout} label="显示分类">
+             {getFieldDecorator("typeChange")(
+               <Select  placeholder="显示分类" style={{ width: 150 }}  allowClear={true}>
+                 {showGenerMap.map(d=> <Option key={d.key} value={d.key}>{d.value}</Option>)}
+               </Select>
+             )}
+           </FormItem>
+           </Col>
          <Col span={4} style={{ textAlign: 'right' }} >
            <Button type="primary" onClick={this.props.handleSearch}><Icon type="sync" />查询</Button>
            <Button style={{ marginLeft: 8 }} onClick={this.props.handleReset}> 重置</Button>

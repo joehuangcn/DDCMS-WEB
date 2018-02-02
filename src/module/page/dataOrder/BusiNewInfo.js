@@ -155,7 +155,7 @@ class  DiffInfoModal extends Component {
              </Col>
             </Row>
              <Divider>文件级校验</Divider>
-            <Row gutter={4}>
+           <Row gutter={12}>
             <Col span={12}>
             {this.handleRenderTab("input",inputFormItemLayout,"文件名格式","fileNameStandard",true,record.fileNameStandard,[],0,'')}
              </Col>
@@ -189,10 +189,13 @@ class  DiffInfoModal extends Component {
              </Col>
              </Row>
              <Row gutter={4}>
-             <Col span={12}>
-             {this.handleRenderTab("input",inputFormItemLayout,"空字段转换","emptyTrans",false,record.emptyTrans,[],0,'')}
+             <Col span={8}>
+               {this.handleRenderTab("select",inputFormItemLayout,"空字段选择","emptySelectType ",false,record.emptySelectType,busNetList,0,'')}
              </Col>
-             <Col span={12}>
+             <Col span={8}>
+               {this.handleRenderTab("input",inputFormItemLayout,"空字段转换","emptyTrans",false,record.emptyTrans,[],0,'')}
+             </Col>
+             <Col span={8}>
                {this.handleRenderTab("input",inputFormItemLayout,"字段顺序转换","dataRankRule",false,record.dataRankRule,[],0,'')}
              </Col>
              </Row>
@@ -369,7 +372,6 @@ class BusiNewInfo extends Component{
       +"&removePrefix="+values.removePrefix
       +"&id="+bid
       +"&act="+this.state.action;
-        console.log(values,text);
       ajaxUtil("urlencoded","file-format-manager!save.action",text,this,(data,that) => {
         let status=data.success;
         let message= data.message;

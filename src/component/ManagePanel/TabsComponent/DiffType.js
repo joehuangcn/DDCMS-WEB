@@ -19,6 +19,7 @@ class  DiffType extends Component {
       queryCity:'',
       pieData:[],
       pagination:{},
+      config:props.config,
       pieData:{
           title : {
             text: '业务差异饼图统计',
@@ -59,7 +60,10 @@ class  DiffType extends Component {
     this.getPieFetch();
   }
   componentWillReceiveProps(props){
-    this.handleReset();
+    if (props.config.bizCode!== this.state.config.bizCode) {
+      this.setState({config:props.config},);
+      this.handleReset();
+    }
   }
 
   getHead=()=>{
@@ -76,10 +80,8 @@ class  DiffType extends Component {
   }
 
   handleFocus() {
-    const {bizCode} =this.props.config;
-   console.log('focus');
    ajaxUtil("urlencoded","constant!getCityCodeEntryAllList.action","",this,(data,that)=>{
-     console.log(data);
+
      this.setState({citys:data.data});
    });
  }
@@ -104,7 +106,6 @@ class  DiffType extends Component {
  }
 
  fetch = (params = {}) => {
-   console.log('4---params',params);
     this.setState({loading:true});
     let page=0;
     if (params.page>1) {
@@ -155,7 +156,7 @@ class  DiffType extends Component {
         });
      });
   }
-  
+
   handleReset = () => {
    this.form.resetFields();
    this.setState({queryCity:'',startDate:'',endDate:''},()=>{this.fetch();this.getPieFetch();});
@@ -167,7 +168,6 @@ class  DiffType extends Component {
      if (err) {
        return;
      }
-     console.log("----values",values);
      let queryCity=values.queryCity===undefined?'':values.queryCity;
      let auditDate=values.auditDate===undefined||values.auditDate==null?'':values.auditDate.format('YYYY-MM-DD');
      let obDateDate=values.obDateDate===undefined||values.obDateDate==null?'':values.obDateDate.format('YYYY-MM-DD');

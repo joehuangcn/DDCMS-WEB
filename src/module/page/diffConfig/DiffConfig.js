@@ -19,7 +19,6 @@ class DiffConfig extends Component {
 
     // 初始化
     getInitProps=(props)=>{
-     //  console.log(props);
        const {state}=props.location;
        let permission=[];
        ajaxUtil("urlencoded","permiss!getUserBtnPermissByResid.action","resid="+state.id, this,(data,that)=>{
@@ -37,7 +36,6 @@ class DiffConfig extends Component {
      }
 
      changebizNode=(selectedKeys,title) =>{
-       console.log(selectedKeys+""+title);
        this.setState({bizCode:selectedKeys,bizName:title});
      }
 

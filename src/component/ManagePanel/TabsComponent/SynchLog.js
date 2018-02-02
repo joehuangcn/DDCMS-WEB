@@ -20,9 +20,11 @@ class SynchLog extends Component {
       pagination:{},
       selectedRowKeys:[],
       selectedDiff:[],
+      abletodown:false,
+      config:props.config,
     }
   }
-  
+
   handleTableChange = (pagination, filters, sorter) => {
     const pager = {...this.state.pagination};
     pager.current=pagination.current;
@@ -46,7 +48,10 @@ class SynchLog extends Component {
   }
 
   componentWillReceiveProps(props){
-    this.handleReset();
+    if (props.config.bizCode!== this.state.config.bizCode) {
+      this.setState({config:props.config});
+      this.handleReset();
+    }
   }
 
   getDynColumnHead =() =>{
@@ -72,26 +77,72 @@ class SynchLog extends Component {
 //successNum failNum
   renderDow =(text,record,index) =>{
     let value=record.synId+"-successNum";
+    const {abletodown}=this.state;
     if (text==='') {
       return '';
-    }else if (parseInt(text,10)===0){
-      // return text;
+    }else if (abletodown==true) {
       return <Checkbox onChange={this.onCheckChange} value={value}>{text}<Icon type="download" /></Checkbox>
-    }else if(parseInt(text,10)>0){
-        return <Checkbox onChange={this.onCheckChange} value={value}>{text}<Icon type="download" /></Checkbox>
+    }else {
+      return "请申请下载权限";
     }
   }
   renderDowFail=(text,record,index) =>{
     let value=record.synId+"-failNum";
+    const {abletodown}=this.state;
     if (text==='') {
       return '';
-    }else if (parseInt(text,10)===0){
-      // return text;
+    }else if (abletodown==true) {
       return <Checkbox onChange={this.onCheckChange} value={value}>{text}<Icon type="download" style={{color:'blue'}}/></Checkbox>
-    }else if(parseInt(text,10)>0){
-        return <Checkbox onChange={this.onCheckChange} value={value}>{text}<Icon type="download" style={{color:'blue'}} /></Checkbox>
+    }else {
+      return "请申请下载权限";
     }
   }
+
+
+  UrlSearchDiff =(url) =>{
+     let name,value;
+     let num=url.indexOf("?")
+     url=url.substr(num+1); //取得所有参数   stringvar.substr(start [, length ]
+     let arr=url.split("&"); //各个参数放到数组里
+     let object=new Map();
+     for(let i=0;i < arr.length;i++){
+         num=arr[i].indexOf("=");
+         if(num>0){
+             name=arr[i].substring(0,num);
+             value=arr[i].substr(num+1);
+            object[name]=value;
+         }
+     }
+     return object;
+}
+
+handelRequestDownload=()=>{
+  ajaxUtil("urlencoded","download-apply-info!get4a.action","",this,(data,that)=>{
+      if (data.success==="true") {
+        // http://10.67.12.11:9090/vaultgoto4a/valustgoto/valultmain.do?appCode=147000&operCode=14101&subLoginName=admin&&soNbr=2018012316150674217
+   let url=data.message;
+ let li1=url.split("?");
+ let uri=li1[0];
+ let urlSearch=this.UrlSearchDiff(url);
+ let obj={"url":uri,"appCode":urlSearch.appCode,"operCode":urlSearch.operCode,"subLoginName":urlSearch.subLoginName,"soNbr":urlSearch.soNbr};
+ var ret =window.open("/DDCMS/pagejs/DataAudit/AAAA.jsp",obj,"center=yes;dialogWidth=800px;dialogHeight=600px") ;
+//  window.open("/DDCMS/pagejs/DataAudit/AAAA.jsp")
+      // this.dowloadCheck.show(obj);
+      if(ret==null){
+        message.error("获取4A申请地址出错.");
+      }else{
+      var rets=ret.split("|");
+      if("0"==rets[0]){
+        message.info("申请下载权限成功");
+        this.setState({abletodown:true});
+      }
+    }
+      }else{
+        message.error("获取4A申请地址出错.");
+      }
+  });
+
+}
 
  //选择处理,选中则加入进去
   onCheckChange=(e) =>{
@@ -101,7 +152,7 @@ class SynchLog extends Component {
     }else{
       changeDiff.splice(changeDiff.indexOf(e.target.value),1);
     }
-    console.log(changeDiff);
+
     this.setState({selectedDiff:changeDiff});
   }
   reflash=() => {
@@ -133,7 +184,6 @@ class SynchLog extends Component {
   }
 
   exportMes=(e)=>{
-    console.log(e);
      const {config} = this.props;
      let synId='';
      let downflag='';
@@ -211,7 +261,7 @@ class SynchLog extends Component {
       if (err) {
         return;
       }
-      console.log("----values",values);
+
       let startDate=values.startDate===undefined||values.startDate==null?'':values.startDate.format('YYYY-MM-DD');
       let endDate=values.endDate===undefined||values.endDate==null?'':values.endDate.format('YYYY-MM-DD');
       this.setState({startDate,endDate},()=>{this.fetch()});
@@ -223,7 +273,6 @@ class SynchLog extends Component {
    }
 
    onSelectChange = (selectedRowKeys) => {
-  console.log('selectedRowKeys changed: ', selectedRowKeys);
   this.setState({ selectedRowKeys });
   }
 
@@ -248,7 +297,7 @@ class SynchLog extends Component {
     return(
     <div className="table-colums" style={{heigth:'100%'}} >
       <SearchBut ref={(ref) => this.form = ref} handleSearch={this.handleSearch} handleReset={this.handleReset}
-     handleDownloadDiffDetail={this.handleDownloadDiffDetail}  exportMes={e =>this.exportMes(e)}/>
+     handleDownloadDiffDetail={this.handleDownloadDiffDetail}  handelRequestDownload={this.handelRequestDownload} exportMes={e =>this.exportMes(e)}/>
       <Table rowKey='synId' rowClassName={(record, index) =>{}} rowSelection={rowSelection} columns={columns}  loading={this.state.loading}
       dataSource={this.state.data} pagination={this.state.pagination} onChange={this.handleTableChange} scroll={{x:'120%',y:'120%'}} size="middle"/>
     </div>)
@@ -281,21 +330,21 @@ class StatSearch extends Component {
    return(
     <Form layout="inline"  >
        <Row gutter={24}>
-        <Col span={6}>
+        <Col span={5}>
          <FormItem {...formItemLayout} label="开始时间" >
            {getFieldDecorator("startDate")(
                <DatePicker className='1111' placeholder="开始时间" style={{width:150}}/>
            )}
          </FormItem>
          </Col>
-         <Col span={6} >
+         <Col span={5} >
           <FormItem {...formItemLayout} label="结束时间">
             {getFieldDecorator("endDate")(
                 <DatePicker  placeholder="结束时间" style={{width:150}}/>
             )}
           </FormItem>
           </Col>
-         <Col span={8} style={{ textAlign: 'right' }} >
+         <Col span={10} style={{ textAlign: 'right' }} >
            <Button type="primary" onClick={this.props.handleSearch}>查询</Button>
            <Button style={{ marginLeft: 8 }} onClick={this.props.handleReset}> 重置</Button>
            <Dropdown overlay={menu} style={{ marginLeft: 16 }}>
@@ -303,7 +352,8 @@ class StatSearch extends Component {
                 <Icon type="file-excel" />导出<Icon type="down" />
               </Button>
             </Dropdown>
-          <Button style={{ marginLeft: 24 }} onClick={this.props.handleDownloadDiffDetail}> 下载差异</Button>
+          <Button style={{ marginLeft: 24 }} onClick={this.props.handelRequestDownload}> 下载申请</Button>
+        <Button style={{ marginLeft: 8 }} onClick={this.props.handleDownloadDiffDetail}> 下载差异</Button>
          </Col>
        </Row>
      </Form>

@@ -29,7 +29,6 @@ class DiffList extends Component {
 
   componentWillReceiveProps(nextProps) {
     const {bizCode}=nextProps;
-    console.log('setState之后的',bizCode);
     if (bizCode!==this.state.bizCode) {
       this.fetch({bizCode:bizCode});
       ajaxUtil("urlencoded","business!findRelatNet.action","bizCode="+bizCode,this,(data,that)=>{
@@ -138,7 +137,7 @@ class DiffList extends Component {
   }
   // 请求查询method
   fetch = ( params ={} ) => {
-    console.log('params',params);
+  
     this.setState({loading:true});
     let bizCode="";
     if (params.bizCode!==undefined) {

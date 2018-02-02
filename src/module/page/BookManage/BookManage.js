@@ -42,7 +42,6 @@ class BookManage extends Component {
 
   // 初始化
   getInitProps=(props)=>{
-   //  console.log(props);
      const {state}=props.location;
      let permission=[];
      ajaxUtil("urlencoded","permiss!getUserBtnPermissByResid.action","resid="+state.id, this,(data,that)=>{
@@ -155,7 +154,6 @@ class BookManage extends Component {
     });
   };
   fetch = (params = {}) => {
-    console.log("params", params);
     this.setState({ loading: true });
     let page = 0;
     if (params.page > 1) {
@@ -201,7 +199,6 @@ class BookManage extends Component {
   };
 
   cowConfirm = e => {
-    console.log("e", e);
     ajaxUtil("urlencoded", "dictionaryAction!getDictionaryList.action", "id");
   };
   onStartChange = (date, dateString) => {

@@ -25,7 +25,6 @@ class ActionLogInfo extends Component{
   }
 
   getDynColumnHead =() =>{
-    // console.log(dynColumns);
     const firtColumns =[
       {title: '操作人',dataIndex: 'optname', key: 'optname',width:150},
       {title: '操作时间',dataIndex: 'operateTime', key: 'operateTime',width:160},
@@ -82,7 +81,6 @@ class ActionLogInfo extends Component{
      if (err) {
        return;
      }
-     console.log(values);
      let optTime=values.optTime===undefined||values.optTime==null?'':values.optTime.format('YYYY-MM-DD');
      let userName=values.userName===undefined?'':values.userName;
      this.setState({optTime,userName},()=>{this.fetch()});
@@ -110,7 +108,6 @@ handleTableChange = (pagination, filters, sorter) => {
 }
 
  onSelectChange = (selectedRowKeys) => {
-    console.log('selectedRowKeys changed: ', selectedRowKeys);
     this.setState({ selectedRowKeys });
   }
 

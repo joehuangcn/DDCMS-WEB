@@ -127,7 +127,6 @@ class TableList extends Component {
          if (err) {
            return;
          }
-         console.log(values);
          let startDate=values.startDate===undefined||values.startDate==null?'':values.startDate.format('YYYY-MM-DD');
          let endDate=values.endDate===undefined||values.endDate==null?'':values.endDate.format('YYYY-MM-DD');
          this.setState({startDate,endDate},()=>{this.fetch()});
@@ -228,7 +227,7 @@ class TableMonthList extends Component {
          if (err) {
            return;
          }
-         console.log(values);
+    
          let startDate=values.startDate===undefined||values.startDate==null?'':values.startDate.format('YYYY-MM-DD');
          let endDate=values.endDate===undefined||values.endDate==null?'':values.endDate.format('YYYY-MM-DD');
          this.setState({startDate,endDate},()=>{this.fetch()});

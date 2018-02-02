@@ -28,7 +28,7 @@ class AuditProgressInfo extends Component{
   }
 
   getDynColumnHead =() =>{
-    // console.log(dynColumns);
+
     const firtColumns =[
       {title: '创建时间',dataIndex: 'createDate', key: 'createDate',width:150},
       {title: '任务状态',dataIndex: 'taskStatus', key: 'taskStatus',width:160,render:(text)=>(this.renderStatus(text))},
@@ -179,7 +179,6 @@ class AuditProgressInfo extends Component{
      if (err) {
        return;
      }
-     console.log(values);
     let startTime=values.startTime===undefined||values.startTime==null?'':values.startTime.format('YYYY-MM-DD');
      let endTime=values.endTime===undefined||values.endTime==null?'':values.endTime.format('YYYY-MM-DD');
       let auditName=values.auditName===undefined?'':values.auditName;
@@ -210,7 +209,7 @@ handleTableChange = (pagination, filters, sorter) => {
 }
 
  onSelectChange = (selectedRowKeys) => {
-    console.log('selectedRowKeys changed: ', selectedRowKeys);
+
     this.setState({ selectedRowKeys });
   }
 

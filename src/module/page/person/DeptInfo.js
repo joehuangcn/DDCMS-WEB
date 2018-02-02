@@ -88,7 +88,6 @@ class DeptList extends Component {
   }
 
   getTreeList = ()=> {
-    console.log("获取的业务树为");
     ajaxUtil("urlencoded","dept!getComboTreeByDept.action","",this,(data,that)=> {
       this.setState({
         treeData:data
@@ -127,7 +126,6 @@ class DeptList extends Component {
   // </Tree>
 
 onSelect =(selectedKeys,info) =>{
-  console.log("selected",selectedKeys,info);
   this.props.changeNode(selectedKeys[0]);
 }
   render () {
@@ -165,8 +163,6 @@ class PersonInfo extends Component {
 
   componentWillReceiveProps(nextProps) {
       const {node}=nextProps;
-
-      console.log('setState之后的',this.state.node);
       this.getlist({node:node});
   }
 
@@ -230,7 +226,6 @@ class PersonInfo extends Component {
   }
 
   getlist= (params={} )=> {
-    console.log('params',params);
     this.setState({loading:true});
     let node="";
     if (params.node!==undefined) {
@@ -307,7 +302,6 @@ class PersonInfo extends Component {
     });
   }
   onSelectChange = (selectedRowKeys) => {
-    console.log('selectedRowKeys changed: ', selectedRowKeys);
       this.setState({ selectedRowKeys });
  }
  defaultPwd=()=>{

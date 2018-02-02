@@ -195,7 +195,6 @@ renderStatus=(value)=>{
      if (err) {
        return;
      }
-     console.log(values);
      let startDate=values.startDate===undefined||values.startDate==null?'':values.startDate.format('YYYY-MM-DD');
      let endDate=values.endDate===undefined||values.endDate==null?'':values.endDate.format('YYYY-MM-DD');
      let query=values.query===undefined?'':values.query;
@@ -225,7 +224,6 @@ handleTableChange = (pagination, filters, sorter) => {
 }
 
 exportMes=(e)=>{
-  console.log(e);
    const {config,permission} = this.state;
    let synId='';
    let downflag='';
@@ -264,7 +262,7 @@ exportMes=(e)=>{
  }
 
  onSelectChange = (selectedRowKeys) => {
-    console.log('selectedRowKeys changed: ', selectedRowKeys);
+
     this.setState({ selectedRowKeys });
   }
   // 打开新建窗口

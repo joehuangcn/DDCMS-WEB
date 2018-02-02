@@ -19,34 +19,35 @@ class StatReportGridXJ extends Component {
       pagination:{},
       citys:[],
       selectedRowKeys:[],
+      config:props.config,
     }
   }
 
   componentWillMount(){
-    console.log("111");
     // this.getDynColumnHead();
   }
   // componentDidMount() {
-  //   console.log("222");
   //   this.fetch();
   // }
   componentWillReceiveProps(props){
-    console.log("333");
-    const {config}=props;
-    this.setState({
-      data:[],
-      total:'',
-      loading: false,
-      queryCity:'',
-      startDate:'',
-      endDate:'',
-      columns:[],
-      pagination:{},
-      citys:[],
-    });
-    this.form.resetFields();
-    this.getDynColumnHead(config);
-    this.fetch();
+    if (props.config.bizCode!== this.state.config.bizCode) {
+
+      const {config}=props;
+      this.setState({
+        data:[],
+        total:'',
+        loading: false,
+        queryCity:'',
+        startDate:'',
+        endDate:'',
+        columns:[],
+        pagination:{},
+        citys:[],
+        config:config,
+      },() =>this.fetch());
+      this.form.resetFields();
+      this.getDynColumnHead(config);
+    }
   }
   reflash= () => {
     this.fetch();
@@ -85,13 +86,13 @@ class StatReportGridXJ extends Component {
           },
           body:text,
        }).then((response) => {
-            // console.log("test for respone");
+
             return response.text();
           }).then((text)  => {
              let resArray = text.split(',');
             //  let addcolumns="";
             let cols=constColumns;
-            // console.log('--cols to before---',cols);
+
              for (let i = 0; i < resArray.length; i++) {
                 let f = resArray[i];
                 let head="";
@@ -100,7 +101,7 @@ class StatReportGridXJ extends Component {
                 }else{
                   head = f;
                 }
-                // console.log('columns',this.state.columns);
+
                 let addcolumns={title:head+"总量", dataIndex:f,key: f ,width:160};
                 // +",{title:'"+head+"一致率(一致总量/BOSS总量)',dataIndex:'CURR_MOTH_"+f+"',key: 'CURR_MOTH_"+f+"',}"
                 // +",{title:'上月同期"+head+"一致率(一致总量/BOSS总量)',dataIndex:'PREV_MOTH_"+f+"',key: 'PREV_MOTH_"+f+"',}"
@@ -108,7 +109,7 @@ class StatReportGridXJ extends Component {
                 cols.push(addcolumns);
                 // addcolumns=this.state.columns.substring(0,this.state.columns.length-1);
                 // +"]";
-                // console.log('col',cols);
+
                 // this.state.columns=cols;
              }
              if (config.bizCode.substring(0,1)==1) {
@@ -150,7 +151,9 @@ class StatReportGridXJ extends Component {
      if (params.page>1) {
        page=(params.page-1)*10;
      }
-     const {config} = this.props;
+    //  const {config} = this.props;
+
+    const {config}=this.state;
      const text="startDate="+this.state.startDate
      +"&endDate="+this.state.endDate
      +"&cityCode="+this.state.queryCity
@@ -161,7 +164,7 @@ class StatReportGridXJ extends Component {
     //  +"&sort="+config.sort
     //  +"&dir="+config.dir
      +"&start="+page+"&limit=10";
-    //  console.log("text=\""+text+"\"");
+
 
      ajaxUtil("urlencoded","audit-stat!getAuditStatListOfJson.action",text,this,(data,that)  => {
        const pagination = that.state.pagination;
@@ -185,7 +188,7 @@ class StatReportGridXJ extends Component {
       if (err) {
         return;
       }
-      console.log("----values",values);
+
       let queryCity=values.citys===undefined?'':values.citys;
       let startDate=values.startDate===undefined||values.startDate==null?'':values.startDate.format('YYYY-MM-DD');
       let endDate=values.endDate===undefined||values.endDate==null?'':values.endDate.format('YYYY-MM-DD');
@@ -194,13 +197,13 @@ class StatReportGridXJ extends Component {
 }
 
 exportMes=(e)=>{
-  console.log(e);
-   const {config} = this.props;
+
+   const {config} = this.state;
    let synId='';
    let downflag='';
    let text="startDate="+this.state.startDate
    +"&endDate="+this.state.endDate
-   +"&cityCode="+this.state.city
+   +"&cityCode="+this.state.queryCity
    +"&bizCodeParam="+config.bizCode
    +"&auditType="+config.auditType
    +"&dataScope="+config.dataScope
@@ -223,7 +226,7 @@ exportMes=(e)=>{
 }
 
 onSelectChange = (selectedRowKeys) => {
-console.log('selectedRowKeys changed: ', selectedRowKeys);
+
 this.setState({ selectedRowKeys });
 }
   render() {

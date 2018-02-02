@@ -89,8 +89,6 @@ gethandleSwith=(value) =>{
 }
 handleBizTreeChange=(value) => {
   // let bizList=this.props.bizList;
-    // console.log(this.props.form);
-    // console.log(this.props.form.getFieldValue('auditTask.bizCode'));
   // this.props.form.setFieldsValue({'auditTask.auditTaskName':value});
   this.gethandleSwith(value);
   ajaxUtil("urlencoded","bus-net-field!getFieldNamesByBizCode.action","bizCode="+value,this,(data,that)=>{
@@ -483,7 +481,7 @@ class AuditTaskInfo extends Component{
             this.setState({deptList:data});
         });
         ajaxUtil("urlencoded","module!getMenuSelect.action","parentCode=0&statu=1",this,(data,that) => {
-            // console.log(data);
+
             this.setState({menu:data});
         });
     }
@@ -509,8 +507,7 @@ class AuditTaskInfo extends Component{
         if (err) {
           return;
         }
-        console.log("----values",values);
-
+  
         this.setState({
           confirmLoading:true,
         });

@@ -79,7 +79,7 @@ renderStatus=(value,record)=>{
 
   downloadFile=(value,listnumber) =>{
     let text="downlistnumber="+listnumber+"&filename="+value;
-    console.log("vlaue---downloadfile",text);
+    // console.log("vlaue---downloadfile",text);
     window.location.href="/DDCMS/sftpfile!download.action?"+text;
   }
 
@@ -204,7 +204,6 @@ renderStatus=(value,record)=>{
      if (err) {
        return;
      }
-     console.log(values);
      let startDate=values.startDate===undefined||values.startDate==null?'':values.startDate.format('YYYY-MM-DD');
      let endDate=values.endDate===undefined||values.endDate==null?'':values.endDate.format('YYYY-MM-DD');
      let query=values.query===undefined?'':values.query;
@@ -305,7 +304,7 @@ handleTableChange = (pagination, filters, sorter) => {
  // }
 
  onSelectChange = (selectedRowKeys) => {
-    console.log('selectedRowKeys changed: ', selectedRowKeys);
+  
     this.setState({ selectedRowKeys });
   }
   // 打开新建窗口

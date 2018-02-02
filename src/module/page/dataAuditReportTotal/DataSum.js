@@ -34,7 +34,6 @@ class DataSum extends Component{
   }
 
   getDynColumnHead =() =>{
-    // console.log(dynColumns);
     const firtColumns =[
       {title: '业务类型',dataIndex: 'BIZSCOPENAME', key: 'BIZSCOPENAME',width:150},
       { title: '稽核总量',dataIndex: 'AUDITTOTAL',key: 'AUDITTOTAL',width:100},
@@ -46,24 +45,6 @@ class DataSum extends Component{
       { title: '差异处理总量', dataIndex:'DIFFPROCESS',key: 'DIFFPROCESS',width:100},
       { title: '整体一致率', dataIndex: 'YLPER',  key: 'YLPER',width:100,render:(text)=>(this.renderRate(text))},
     ]
-    // let flatArray=[];
-    // if (dynColumns!==undefined) {
-    //     let dynColumnsList=dynColumns.split(",");
-    //     for (var i = 0; i < dynColumnsList.length; i++) {
-    //       let some=dynColumnsList[i];
-    //       if (some==='CBSS') {
-    //           some="CBOSS";
-    //       }
-    //       if (some!=='') {
-    //         let head = some.replace("FLAT","业务平台").replace("MAS","行业网关");
-    //         flatArray.push({title: head + '总量',dataIndex: some,key:some, width: 100});
-    //       }
-    //     }
-    // }
-    //
-    // console.log(flatArray);
-
-
     this.setState({columns:firtColumns});
   }
 
@@ -88,7 +69,6 @@ class DataSum extends Component{
      if (typeof(params.sortOrder) !== "undefined" ) {
        dir=(params.sortOrder=="descend"?"desc":"asc");
      }
-    //  const {config} = this.props;
     const {cityCode,startDate,endDate,bizCodeParams}=this.state;
      const text="startDate="+startDate
      +"&endDate="+endDate
@@ -142,7 +122,6 @@ class DataSum extends Component{
      if (err) {
        return;
      }
-     console.log(values);
      let cityCode=values.queryCity===undefined?'':values.queryCity;
      let startDate=values.startDate===undefined||values.startDate==null?'':values.startDate.format('YYYY-MM-DD');
      let endDate=values.endDate===undefined||values.endDate==null?'':values.endDate.format('YYYY-MM-DD');
@@ -172,7 +151,6 @@ handleTableChange = (pagination, filters, sorter) => {
 }
 
 exportMes=(e)=>{
-  console.log(e);
    const {config,permission} = this.props;
    let synId='';
    let downflag='';
@@ -197,7 +175,6 @@ exportMes=(e)=>{
  }
 
  onSelectChange = (selectedRowKeys) => {
-    console.log('selectedRowKeys changed: ', selectedRowKeys);
     this.setState({ selectedRowKeys });
   }
 

@@ -200,7 +200,6 @@ class OrderMes extends Component {
 
   getWorkOrderDetail=()=>{
     ajaxUtil("urlencoded","module!getModleByRouter.action","router=/WorkOrder",this,(data,that) => {
-      console.log(data);
       this.setState({menu:data});
     });
   }
@@ -210,7 +209,7 @@ class OrderMes extends Component {
  }
   handleTableChange=(pagination,filters,sorter)=> {
     const pager={...this.state.pagination};
-    console.log('pager',pager);
+
     pager.current=pagination.current;
     this.setState({
       pagination:pager,
@@ -226,7 +225,6 @@ class OrderMes extends Component {
 
   fetchData=(params ={} )=>{
     this.setState({loading:true});
-    console.log('params',params);
     let page=0;
     if (params.page>1) {
       page=(params.page-1)*5;
@@ -243,7 +241,6 @@ class OrderMes extends Component {
     +"&start="+page+"&limit=5";
 
     ajaxUtil("urlencoded","work-order!getPersonalList.action",text,this,(data,that)=>{
-      console.log("fetch data ",data);
       const pagination = that.state.pagination;
       pagination.total = parseInt(data.total,10);
       that.setState({
@@ -297,7 +294,6 @@ class CheckModalForm extends Component {
   }
 
   showCheckInfo=(text,updateStat,record) =>{
-    console.log('showCheckInfo',text);
     this.setState({
       visible:true,
       modalTitle:text,

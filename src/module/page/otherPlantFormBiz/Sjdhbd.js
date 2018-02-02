@@ -121,7 +121,6 @@ class Sjdhbd extends Component {
     }
 
     exportMes=(e)=>{
-    console.log(e);
     const {config,permission} = this.props;
     let synId='';
     let downflag='';
@@ -158,7 +157,6 @@ class Sjdhbd extends Component {
         });
     }
     fetch = ( params ={} ) => {
-        console.log('params',params);
         this.setState({loading:true}) ;
         let page=0;
         if (params.page>1) {
@@ -198,7 +196,6 @@ class Sjdhbd extends Component {
 
 
     cowConfirm = (e) =>{
-        console.log("e",e);
           ajaxUtil("urlencoded","sjdhbd!getJsonList.action","id",)
     }
     onStartChange =(date, dateString) => {

@@ -58,7 +58,6 @@ class TargetNumAnalay extends Component {
   }
   // 初始化
   getInitProps=(props)=>{
-   //  console.log(props);
      const {state}=props.location;
      let permission=[];
      ajaxUtil("urlencoded","permiss!getUserBtnPermissByResid.action","resid="+state.id, this,(data,that)=>{
@@ -76,10 +75,6 @@ class TargetNumAnalay extends Component {
    }
 
    handleFocus() {
-    // console.log('focus');
-    // ajaxUtil("urlencoded","constant!getCityCodeEntryAllList.action","",this,(data,that)=>{
-    //   this.setState({citys:data.data});
-    // });
     ajaxUtil("urlencoded","business!getBusAfterNew.action","",this,(data,that)=>{
         this.setState({bizList:data});
     });
@@ -172,7 +167,6 @@ class TargetNumAnalay extends Component {
      if (err) {
        return;
      }
-     console.log("----values",values);
      let bizCode=values.bizCode===undefined?'':values.bizCode;
      let obDate=values.obDate===undefined?'':values.obDate;
      let diffCode=values.diffCode===undefined?'':values.diffCode;
@@ -183,7 +177,6 @@ class TargetNumAnalay extends Component {
   }
 
   exportMes=(e)=>{
-    console.log(e);
      const {bizCode,obDate,diffCode,cityCode,removeZero,pagination}=this.state;
      let page=0;
      if (pagination.current>1) {

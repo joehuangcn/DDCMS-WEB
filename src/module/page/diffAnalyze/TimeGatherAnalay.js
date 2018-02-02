@@ -40,7 +40,6 @@ class  TimeGatherAnalay extends Component {
    });
   }
   componentDidMount(){
-    // console.log('OK');
     this.fetch();
   }
 
@@ -71,7 +70,6 @@ class  TimeGatherAnalay extends Component {
      if (err) {
        return;
      }
-     console.log("----values",values);
      let bizCode=values.bizCode===undefined?'':values.bizCode;
      let diffCode=values.diffCode===undefined?'':values.diffCode;
      let cityCode=values.cityCode===undefined?'':values.cityCode;

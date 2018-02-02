@@ -44,6 +44,9 @@ class  AuditSync extends Component {
       handleCpyChange:'',
       containZero:false,
       selectedRowKeys:[],
+      selectedDown:[],
+      abletodown:false,
+      config:props.config,
     }
   }
 
@@ -53,9 +56,10 @@ class  AuditSync extends Component {
   }
 
   componentWillReceiveProps(props){
-    // this.getHead();
-    // this.handleFocus();
-    this.handleReset();
+     if (props.config.bizCode!== this.state.config.bizCode) {
+       this.setState({config:props.config});
+       this.handleReset();
+    }
   }
 
   componentDidMount(){
@@ -94,10 +98,7 @@ class  AuditSync extends Component {
      +"&dataScope="+config.dataScope
      +"&dataType="+config.dataType
      +"&bizCodeParam="+config.bizCode
-    //  +"&sort="+config.sort
-    //  +"&dir="+config.dir
      +"&start="+page+"&limit=10";
-     console.log("text=\""+text+"\"");
 
      ajaxUtil("urlencoded","audit-stat!getAuditDiffDetailList.action",text,this,(data,that)  => {
        const pagination = that.state.pagination;
@@ -126,16 +127,17 @@ class  AuditSync extends Component {
       {  title:'客服口径',  dataIndex:'CSEXPLAN',key:'csExplan', width:150},
       {  title:'牵头处理单位',dataIndex:'HANDLE_COMPANY',key:'handleCompany',  width:200},
       {  title:'差异处理方法',  dataIndex:'DIFF_HANDLE_METHOD',  key:'diffHandleMethod',  width:300},
-      {title:'用户是否感知',dataIndex:'IS_USER_KNOWN',  key:'isUserKnown',width:150},
-      {title:'下载申请',  dataIndex:'down',key:'diffDownApply', width:100,render:(text) =>(this.renderDownApply(text)) },
-      {  title:'下载',  dataIndex:'down',  key:'diffDown',  width:200, render:(text,record) =>(this.renderDownTxt(text,record)) },
+      {  title:'用户是否感知',dataIndex:'IS_USER_KNOWN',  key:'isUserKnown',width:150},
+      {  title:'下载',dataIndex: 'down',  key: 'down',width:150,render:(record) =>(this.renderDownTxt(record))},
       {  title:'上传审核',dataIndex:'diffReview',  key:'diffReview',width:100 ,render:(text,record) =>(this.renderCheckReview(text,record)) },
       {  title:'上传',  dataIndex:'DIFFSYN',  key:'diffSyn',width:100 ,render:(text,record) =>(this.renderSyn(text,record)) },
-      { title:'上传状态',dataIndex:'passOrNot',  key:'passOrNot',  width:150,render:(text) =>(this.renderPassNot(text))}
+      {  title:'上传状态',dataIndex:'passOrNot',  key:'passOrNot',  width:150,render:(text) =>(this.renderPassNot(text))}
     ]
 
     this.setState({columns});
   }
+
+
 
   renderPassNot=(text) =>{
     switch (text) {
@@ -158,11 +160,11 @@ class  AuditSync extends Component {
     }
   }
 
-  renderDownApply =(text) =>{
-      if(text==='disabled'){
-          return <Button type="primary" onClick={() =>this.handelRequestDownload()}>下载申请</Button>
-      }
-  }
+  // renderDownApply =(text) =>{
+  //     if(text==='disabled'){
+  //         return <Button type="primary" onClick={() =>this.handelRequestDownload()}>下载申请</Button>
+  //     }
+  // }
 
   handelRequestDownload=()=>{
     ajaxUtil("urlencoded","download-apply-info!get4a.action","",this,(data,that)=>{
@@ -173,9 +175,18 @@ class  AuditSync extends Component {
    let uri=li1[0];
    let urlSearch=this.UrlSearchDiff(url);
    let obj={"url":uri,"appCode":urlSearch.appCode,"operCode":urlSearch.operCode,"subLoginName":urlSearch.subLoginName,"soNbr":urlSearch.soNbr};
-   var ret =window.showModalDialog("/DDCMS/pagejs/DataAudit/AAAA.jsp",obj,"center=yes;dialogWidth=800px;dialogHeight=600px") ;
+   var ret =window.open("/DDCMS/pagejs/DataAudit/AAAA.jsp",obj,"center=yes;dialogWidth=800px;dialogHeight=600px") ;
   //  window.open("/DDCMS/pagejs/DataAudit/AAAA.jsp")
         // this.dowloadCheck.show(obj);
+        if(ret==null){
+          message.error("获取4A申请地址出错.");
+        }else{
+        var rets=ret.split("|");
+        if("0"==rets[0]){
+          message.info("申请下载权限成功");
+          this.setState({abletodown:true});
+        }
+      }
         }else{
           message.error("获取4A申请地址出错.");
         }
@@ -200,20 +211,36 @@ class  AuditSync extends Component {
      return object;
 }
 
-  renderDownTxt=(text,record) =>{
-      if (text!=='disabled') {
-        return <Row>
-                  <Col span={12}>
-                  <Button type="primary" onClick={() =>this.handleDowDetail(record,"downXls")}>下载XLS</Button>
-                  </Col>
-                  <Col span={12}>
-                  <Button type="primary" onClick={() =>this.handleDowDetail(record,"downTxt")}>下载TXT</Button>
-                  </Col>
-                </Row>
-      }else{
-        return "无权限下载";
-      }
-  }
+
+ renderDownTxt =(text,record) =>{
+   const {config}=this.props;
+   const {abletodown}=this.state;
+   if (abletodown==true) {
+     let value=config.dataScope+"|"+record.CITYCODE+"|"+record.DATATYPE+"|"+record.DIFFTYPE
+     +"|"+record.AUDITTIME+"|"+record.OBTAINDATATIME+"|"+record.DID;
+     return <Row>
+               <Col span={12}>
+                 <Checkbox onChange={this.onCheckChange} value={value+"-downXls"}>XLS<Icon type="download" /></Checkbox>
+               </Col>
+               <Col span={12}>
+                  <Checkbox onChange={this.onCheckChange} value={value+"-downTxt"}>TXT<Icon type="download" /></Checkbox>
+               </Col>
+             </Row>
+   }else{
+     return "请申请下载权限";
+   }
+ }
+
+  // 选择处理,选中则加入进去
+   onCheckChange=(e) =>{
+     let changeDiff= this.state.selectedDown;
+     if (e.target.checked) {
+         changeDiff.push(e.target.value);
+     }else{
+       changeDiff.splice(changeDiff.indexOf(e.target.value),1);
+     }
+     this.setState({selectedDown:changeDiff});
+   }
 
   renderCheckReview=(text,record) =>{
     switch (text) {
@@ -256,7 +283,6 @@ class  AuditSync extends Component {
             break;
       default:
         return "上传(暂无权限)";
-          // return <Button type="primary" onClick={() =>this.handleSyn(record)}>上传</Button>;
     }
   }
 
@@ -270,22 +296,36 @@ class  AuditSync extends Component {
     this.syncheck.showModal("edit",record,this.props.config);
     }
 
-    // 下载差异详情
-    handleDowDetail= (record,flag) =>{
-      const {config}=this.props;
-      if (flag==='downXls' && record.DIFFNUM>80000) {
-        message.warn("下载数据量过大,请通过TXT 方式下载");
+
+    handleDownloadDetail=()=>{
+      const {selectedDown,abletodown}=this.state;
+      const {config} = this.props;
+      if (selectedDown.length<=0) {
+          message.warning("请勾选需要下载的数据");
       }else{
-        let text="dataScope="+config.dataScope+"&cityCode="+record.CITYCODE+"&dataType="+record.DATATYPE+"&bizCodeParam="+record.BIZCODE+"&DIFFTYPE="+record.DIFFTYPE
-        +"&AUDITTIME="+record.AUDITTIME+"&OBTAINDATATIME="+record.OBTAINDATATIME+"&flag="+flag+"&temp="+record.down+"&did="+record.DID;
-        console.log(text);
-          window.location.href="/DDCMS/audit-stat!downloadDiffDetail.action?"+text;
+        message.info("正在下载,请稍后!!!!!");
+         //let text="diffList="+selectedDown;
+        // window.location.href="/DDCMS/syn-log!downloadDiffDetail.action?diffList="+selectedDiff;
+        window.location.href="/DDCMS/audit-stat!downloadAllSelectedDiff.action?difflist="+selectedDown+"&bizcode="+config.bizCode+"&temp="+abletodown;
+        //window.location.href="/DDCMS/syn-log!downloadAllSelectedDiff.action?"+text;
       }
     }
 
+    // 下载差异详情
+    // handleDowDetail= (record,flag) =>{
+    //   const {config}=this.props;
+    //   if (flag==='downXls' && record.DIFFNUM>80000) {
+    //     message.warn("下载数据量过大,请通过TXT 方式下载");
+    //   }else{
+    //     let text="dataScope="+config.dataScope+"&cityCode="+record.CITYCODE+"&dataType="+record.DATATYPE+"&bizCodeParam="+record.BIZCODE+"&DIFFTYPE="+record.DIFFTYPE
+    //     +"&AUDITTIME="+record.AUDITTIME+"&OBTAINDATATIME="+record.OBTAINDATATIME+"&flag="+flag+"&temp="+record.down+"&did="+record.DID;
+
+    //       window.location.href="/DDCMS/audit-stat!downloadDiffDetail.action?"+text;
+    //   }
+    // }
+
  handleFocus() {
    const {bizCode} =this.props.config;
-  console.log('focus');
   ajaxUtil("urlencoded","constant!getCityCodeEntryAllList.action","",this,(data,that)=>{
     this.setState({citys:data.data});
   });
@@ -309,7 +349,7 @@ handleSearch=(e) => {
    if (err) {
      return;
    }
-   console.log("----values",values);
+
    let queryCity=values.queryCity===undefined?'':values.queryCity;
    let startDate=values.startDate===undefined||values.startDate==null?'':values.startDate.format('YYYY-MM-DD');
    let endDate=values.endDate===undefined||values.endDate==null?'':values.endDate.format('YYYY-MM-DD');
@@ -320,7 +360,7 @@ handleSearch=(e) => {
 })
 }
 exportMes=(e)=>{
-  console.log(e);
+
    const {config} = this.props;
    let synId='';
    let downflag='';
@@ -343,16 +383,17 @@ exportMes=(e)=>{
      }else{
        text+="&did="+this.state.selectedRowKeys;
       //  this.help(text);
-       window.location.href="/DDCMS/audit-stat!downAuditComList.action?"+text;
+
+       window.location.href="/DDCMS/audit-stat!downloadAllSelectedDiff.action?"+text;
      }
    }else if (e.key==='2') {
       text+="&downflag=all&synId=";
       // this.help(text);
-      window.location.href="/DDCMS/audit-stat!downAuditComList.action?"+text;
+      window.location.href="/DDCMS/audit-stat!downloadAllSelectedDiff.action?"+text;
    }
 }
 onSelectChange = (selectedRowKeys) => {
-console.log('selectedRowKeys changed: ', selectedRowKeys);
+
 this.setState({ selectedRowKeys });
 }
 
@@ -367,7 +408,8 @@ this.setState({ selectedRowKeys });
     return(
       <div>
         <SearchBut ref={(ref) => this.form = ref} handleSearch={this.handleSearch} handleReset={this.handleReset}  citys={this.state.citys} exportMes={e =>this.exportMes(e)}
-        diffCodes={this.state.diffCodes} handleCompanys={this.state.handleCompanys} containZero={this.state.containZero}/>
+        diffCodes={this.state.diffCodes} handleCompanys={this.state.handleCompanys} containZero={this.state.containZero} handleDownloadDetail={this.handleDownloadDetail}
+        handelRequestDownload={this.handelRequestDownload} />
         <Table rowKey="DID"  rowSelection={rowSelection} columns={this.state.columns}
             loading={this.state.loading} dataSource={this.state.data}   pagination={this.state.pagination}  scroll={{x:'250%',y:450}} size="middle"/>
         <ReviewCheck ref={(ref) => this.review= ref} refresh={this.fetch}/>
@@ -450,7 +492,7 @@ class DiffMapSearch  extends Component {
            )}
          </FormItem>
          </Col>
-         <Col span={6} style={{ textAlign: 'center' }} >
+         <Col span={9} style={{ textAlign: 'center' }} >
            <Button type="primary" onClick={this.props.handleSearch}><Icon type="sync" />查询</Button>
            <Button style={{ marginLeft: 8 }} onClick={this.props.handleReset}> 重置</Button>
            <Dropdown overlay={menu} style={{ marginLeft: 16 }}>
@@ -458,6 +500,8 @@ class DiffMapSearch  extends Component {
                 <Icon type="file-excel" />导出<Icon type="down" />
               </Button>
             </Dropdown>
+            <Button style={{ marginLeft: 24 }} onClick={this.props.handelRequestDownload}> 下载申请</Button>
+          <Button style={{ marginLeft: 8 }} onClick={this.props.handleDownloadDetail}> 下载差异</Button>
          </Col>
        </Row>
      </Form>

@@ -110,7 +110,7 @@ class AuditProgressMain extends Component {
     }
 
      renderContent=(current) =>{
-       console.log(current);
+      //  console.log(current);
        const {buiLocation,modeLocation,roleLocation,netLocation,diffLocation,ftpLocation,buOrderLocation}=this.state;
        switch (current) {
         case 0:return <BusinessList  location={buiLocation}/>;break;

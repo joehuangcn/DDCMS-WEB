@@ -124,7 +124,7 @@ class NewAddModel extends Component {
     }
     getBusTree=() =>{
         ajaxUtil("urlencoded","module!getMenuSelect.action","parentCode=0&statu=1&selectable=yes",this,(data,that) => {
-            // console.log(data);
+
             this.setState({menu:data});
         });
         ajaxUtil("urlencoded","dictionaryAction!getDictionaryListByType.action","name=DICT_ResourceType",this,(data,that) =>{
@@ -152,7 +152,6 @@ class NewAddModel extends Component {
             if (err) {
                 return;
             }
-            console.log("----values",values);
 
             this.setState({
                 confirmLoading:true,

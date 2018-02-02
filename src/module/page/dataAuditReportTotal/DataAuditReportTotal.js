@@ -23,7 +23,6 @@ class  DataAuditReportTotal extends Component {
 
   // 初始化
   getInitProps=(props)=>{
-   //  console.log(props);
      const {state}=props.location;
      let permission=[];
      ajaxUtil("urlencoded","permiss!getUserBtnPermissByResid.action","resid="+state.id, this,(data,that)=>{

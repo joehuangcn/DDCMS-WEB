@@ -215,7 +215,6 @@ handleSeclectChange=(value) =>{
 }
 
   handleRenderEditType=(value,type,selectList)=>{
-    console.log(value);
     switch (type) {
       case 'input':
       return (

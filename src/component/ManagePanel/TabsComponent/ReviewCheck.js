@@ -122,7 +122,7 @@ class ReviewCheck extends Component{
     });
   }
   showModal =(action,record,config) => {
-    console.log(config);
+  
    this.setState({
      visible:true,
      record:record,

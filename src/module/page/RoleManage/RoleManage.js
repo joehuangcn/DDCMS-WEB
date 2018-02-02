@@ -43,7 +43,6 @@ class RoleManage extends Component {
 
     // 初始化
     getInitProps=(props)=>{
-     //  console.log(props);
        const {state}=props.location;
        let permission=[];
        ajaxUtil("urlencoded","permiss!getUserBtnPermissByResid.action","resid="+state.id, this,(data,that)=>{
@@ -68,7 +67,6 @@ class RoleManage extends Component {
 
     //获得层级树
     getTreeList = ()=> {
-        console.log("获取的业务树为");
         ajaxUtil("urlencoded","dept!getComboTreeByDept.action","",this,(data,that)=> {
             this.setState({
                 treeData:data
@@ -161,7 +159,7 @@ class RoleManage extends Component {
     };
 
     fetch = ( params ={} ) => {
-        console.log('params',params);
+
         this.setState({loading:true}) ;
         let page=0;
         if (params.page>1) {
@@ -209,7 +207,7 @@ class RoleManage extends Component {
     };
 
     onSelectChange = (selectedRowKeys) => {
-       console.log('selectedRowKeys changed: ', selectedRowKeys);
+
        this.setState({ selectedRowKeys });
      }
 

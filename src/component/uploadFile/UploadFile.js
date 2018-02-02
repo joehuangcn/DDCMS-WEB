@@ -11,9 +11,8 @@ handleChange = (info) => {
   if (this.props.muliple===false) {
       fileList=fileList.slice(-1);
   }
-  console.log(fileList);
+
   if(info.file.status==='removed') {
-    console.log("deleted the file ", info.file);
     const onChange = this.props.onChange;
     const {deleteUrl}=this.props;
     if (onChange) {

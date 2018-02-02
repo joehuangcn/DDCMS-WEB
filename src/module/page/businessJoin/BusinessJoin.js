@@ -25,7 +25,6 @@ class BusinessJoin extends Component{
   }
   // 初始化
   getInitProps=(props)=>{
-   //  console.log(props);
      const {state}=props.location;
      let permission=[];
      ajaxUtil("urlencoded","permiss!getUserBtnPermissByResid.action","resid="+state.id, this,(data,that)=>{
@@ -43,7 +42,6 @@ class BusinessJoin extends Component{
    }
 
   changebizNode=(selectedKeys,title) =>{
-    console.log(selectedKeys+""+title);
     this.setState({bizCode:selectedKeys,bizName:title});
   }
 
@@ -138,7 +136,6 @@ class JoinType extends Component{
     }
     componentWillReceiveProps(nextProps) {
       const {bizCode}=nextProps;
-      console.log('setState之后的',bizCode);
       if (bizCode!==this.state.bizCode) {
         this.fetch({bizCode:bizCode});
       }
@@ -162,7 +159,6 @@ class JoinType extends Component{
 
     // 请求查询method
     fetch = ( params ={} ) => {
-      console.log('params',params);
       this.setState({loading:true});
       let bizCode="";
       if (params.bizCode!==undefined) {

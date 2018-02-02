@@ -96,8 +96,7 @@ export default  class TypeItem extends Component {
             if (err) {
                 return;
             }
-            console.log("----values",values);
-
+  
             this.setState({
                 confirmLoading:true,
             });

@@ -204,7 +204,6 @@ componentWillMount (){
         +"&commonCopyer.id="+values.workOrder.commonCopyer
         +"&workOrder.checkEndPerson.userId="+values.workOrder.checkEndPerson
         +"&type=1";
-        console.log(values,text);
         ajaxUtil("urlencoded","work-order!saveNew.action",text,this,(data,that) => {
           let status=data.success;
           let message= data.message;

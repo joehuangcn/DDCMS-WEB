@@ -19,7 +19,6 @@ class BizAuditFormModal extends Component {
     }
     changeNode=(node) => {
         this.setState({node});
-        console.log(" 调用了-----node 为",this.state.node);
     }
     render () {
         const { getFieldDecorator} = this.props.form;
@@ -123,7 +122,6 @@ export default class NewDepartment extends Component {
             if (err) {
                 return;
             }
-            console.log("----values",values);
 
             this.setState({
                 confirmLoading:true,

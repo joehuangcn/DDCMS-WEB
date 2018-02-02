@@ -57,7 +57,6 @@ class AccessAudit extends Component {
 
   }
   componentWillMount(){
-    console.log("111");
     this.fetch();
   }
   reflash=()=>{
@@ -65,11 +64,10 @@ class AccessAudit extends Component {
   }
   ifAudit=(values)=>{
     this.setState({ ifAudit: values });
-    console.log(this.state.ifAudit);
+
   }
   ifSync=(values)=>{
     this.setState({ ifSync: values });
-    console.log(this.state.ifSync);
   }
   query=(values)=>{
     this.setState({ query: values });
@@ -79,7 +77,6 @@ class AccessAudit extends Component {
   }
 
   handleTableChange=(pagination,filters,sorter)=>{
-    console.log('coming into handletablechange');
     const pager = { ...this.state.pagination };
     pager.current = pagination.current;
     this.setState({
@@ -95,7 +92,6 @@ class AccessAudit extends Component {
 
   }
   fetch = ( params = {}) => {
-    console.log('params:',params);
     let page=0;
     if (params.page>1) {
       page=(params.page-1)*15;
@@ -107,7 +103,6 @@ class AccessAudit extends Component {
        const pagination = that.state.pagination;
        pagination.total = parseInt(data.total,10);
       //  this.setState({ total: data.total});
-       console.log(data.data);
        this.setState({
            loading: false,
            data: data.data,
@@ -115,6 +110,12 @@ class AccessAudit extends Component {
        });
      });
    }
+
+   setOk=() =>{
+     ajaxUtil("urlencoded", "data-gather!test.action","",this,(data,that)=>{
+     })
+   }
+
 
   render() {
     return(
@@ -139,6 +140,7 @@ class AccessAudit extends Component {
                  onSearch={this.search}
             />
             <Button onClick={this.reflash}><Icon type="sync" />刷新</Button>
+            <Button type="primary" onClick={this.setOk}>完成</Button>
       </div>
       <Table rowKey={()=>uuid.v1()} columns={columns}  loading={this.state.loading} dataSource={this.state.data}  onChange={this.handleTableChange} pagination={this.state.pagination}/>
     </div>)

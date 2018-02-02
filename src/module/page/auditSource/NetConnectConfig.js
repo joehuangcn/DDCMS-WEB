@@ -27,7 +27,7 @@ class NetConnectConfig extends Component {
 
     componentWillReceiveProps(nextProps) {
       const {bizCode}=nextProps;
-      console.log('setState之后的',bizCode);
+
       if (bizCode!==this.state.bizCode) {
         this.fetch({bizCode:bizCode});
       }
@@ -123,7 +123,7 @@ class NetConnectConfig extends Component {
     }
     // 请求查询method
     fetch = ( params ={} ) => {
-      console.log('params',params);
+
       this.setState({loading:true});
       let bizCode="";
       if (params.bizCode!==undefined) {
@@ -336,7 +336,6 @@ class NetConfigConditon extends Component {
   }
 
   onSelectChange = (selectedRowKeys) => {
-    console.log('selectedRowKeys changed: ', selectedRowKeys);
     this.setState({ selectedRowKeys });
   }
 

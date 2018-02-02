@@ -308,7 +308,7 @@ handleDownloadFile=(fileName,woid) =>{
 }
 handleAuditResult=(record)=>{
   let text="bizcode=" + record.busType.bizCode + "&obtainDate=" + (record.obtainDate===undefined?'':record.obtainDate) + "&diffcode=" + record.diffCode + "&personId=" + record.toPerson[0].id + "&bizName=" + record.busType.bizName ;
-      console.log(text);
+
       window.location.href="/DDCMS/work-order!loadAuditSumXLS.action?"+text;
 }
 
@@ -376,9 +376,9 @@ handleAuditDetailTxt=(diffCode,record) =>{
      if (err) {
        return;
      }
-     console.log(values);
+
      let title=values.title===undefined?'':values.title;
-     let isDone=values.isDone===undefined?'':values.endDate;
+     let isDone=values.isDone===undefined?'':values.isDone;
      this.setState({isDone,title},()=>{this.fetch()});
   })
 }
@@ -404,7 +404,7 @@ handleTableChange = (pagination, filters, sorter) => {
 }
 
 exportMes=(e)=>{
-  console.log(e);
+
    const {config,permission} = this.state;
    let synId='';
    let downflag='';
@@ -430,7 +430,6 @@ exportMes=(e)=>{
 
 
  onSelectChange = (selectedRowKeys) => {
-    console.log('selectedRowKeys changed: ', selectedRowKeys);
     this.setState({ selectedRowKeys });
   }
   // 打开新建窗口
@@ -499,15 +498,6 @@ class StatSearch extends Component {
               </Col>
            </Row>
         </Col>
-        <Col span={6} >
-         <FormItem { ...cityItemLayout} label="业务名称">
-           {getFieldDecorator("bizCodeParam")(
-                 <TreeSelect  placeholder='选择业务'
-                    style={{ width: 250 }} allowClear treeCheckable={true} showCheckedStrategy='SHOW_CHILD'
-                 treeData={this.props.bizList}  onChange={this.handleBizTreeChange} />
-           )}
-         </FormItem>
-         </Col>
         <Col span={4}>
          <FormItem {...formItemLayout} label="工单状态/模板">
            {getFieldDecorator("isDone")(
@@ -615,7 +605,6 @@ class CheckModalForm extends Component {
   }
 
   showCheckInfo=(text,updateStat,record) =>{
-    console.log('showCheckInfo',text);
     this.setState({
       visible:true,
       modalTitle:text,

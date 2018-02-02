@@ -76,7 +76,6 @@ class BusinessSelect extends Component {
       }
       return null;
     }).filter((item, i, self) => item && self.indexOf(item) === i);
-    console.log('expandedKeys',expandedKeys);
     this.setState({
       expandedKeys,
       searchValue: value,
@@ -85,7 +84,6 @@ class BusinessSelect extends Component {
   }
 
 onSelect =(selectedKeys,info) =>{
-  console.log("selected",selectedKeys,info);
   // this.props.changebizNode(selectedKeys[0]===undefined?'':selectedKeys[0],info.selectedNodes[0]===undefined?'':info.selectedNodes[0].props.title);
   this.props.changebizNode(selectedKeys[0]===undefined?'':selectedKeys[0],info.selectedNodes[0]===undefined?'':info.selectedNodes[0].props.title);
 }

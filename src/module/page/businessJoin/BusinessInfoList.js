@@ -141,7 +141,6 @@ class  BusinessInfoList extends Component {
 
   componentWillReceiveProps(nextProps) {
     const {bizCode,selectedType}=nextProps;
-    console.log('setState之后的',bizCode);
     if (bizCode!==this.state.bizCode||selectedType!==this.state.selectedType) {
       this.fetch({bizCode:bizCode,selectedType:selectedType});
     }
@@ -221,7 +220,6 @@ class  BusinessInfoList extends Component {
 
   // 请求查询method
   fetch = ( params ={} ) => {
-    console.log('params',params);
     this.setState({loading:true});
     let bizCode=""; let selectedType="";
     if (params.bizCode!==undefined) {

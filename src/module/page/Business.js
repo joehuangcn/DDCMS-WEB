@@ -17,7 +17,8 @@ import Tabs from '../../component/ManagePanel/Tabs';
            export:''
          },
            id:'',
-           permission:[]
+           permission:[],
+           active:"1",
      };
    }
 
@@ -51,7 +52,8 @@ import Tabs from '../../component/ManagePanel/Tabs';
         this.setState({
           id:state.id,
           config:config,
-          permission:permission
+          permission:permission,
+          active:"1",
         });
       });
 
@@ -64,22 +66,17 @@ import Tabs from '../../component/ManagePanel/Tabs';
   //    });
   //  }
    componentWillMount(){
-     console.log("hehehehehehe");
        this.getInitProps(this.props);
    }
 
    componentWillReceiveProps(props){
-     console.log("进入will receive---",props);
       this.getInitProps(props);
    }
    render() {
-    //  console.log("router 获得的 props-------",this.props);
-    //  const {state}=this.props.location;
-       const {config,permission} = this.state;
-       console.log(config);
+       const {config,permission,active} = this.state;
        return (
            <div className="body-content" style={{height:'100%'}}>
-               <Tabs config={config} permission={permission}/>
+               <Tabs config={config} permission={permission} active={active}/>
            </div>
        );
 

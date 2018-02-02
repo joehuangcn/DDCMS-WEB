@@ -16,7 +16,6 @@ componentDidMount(){
 
 fetchData=()=> {
   ajaxUtil("urlencoded","notice!findNoticeListLimitTop.action","",this,(data,that) => {
-    console.log('data--info',data);
     this.setState({data});
   });
 }

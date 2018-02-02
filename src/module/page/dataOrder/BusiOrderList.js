@@ -137,7 +137,6 @@ class BusiOrderList extends Component {
   }
   // 请求查询method
   fetch = ( params ={} ) => {
-    console.log('params',params);
     this.setState({loading:true});
     let bizCode="";
     if (params.bizCode!==undefined) {

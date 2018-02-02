@@ -163,7 +163,6 @@ class PersonInfoNew extends Component{
       +"&person.createTime="+createTime
       +"&person.statu="+values.person.statu
       +"&act="+this.state.action;
-      console.log(deptId);
       ajaxUtil("urlencoded","personAction!savePerson.action",text,this,(data,that) => {
         let status=data.success;
         let message= data.message;

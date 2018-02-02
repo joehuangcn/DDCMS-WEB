@@ -42,7 +42,6 @@ class  DiffTendAnalay extends Component {
    });
   }
   componentDidMount(){
-    // console.log('OK');
     this.fetch();
   }
 
@@ -86,7 +85,7 @@ class  DiffTendAnalay extends Component {
      if (err) {
        return;
      }
-     console.log("----values",values);
+    
      let bizCode=values.bizCode===undefined?'':values.bizCode;
      let startDate=values.startDate===undefined||values.startDate==null?'':values.startDate.format('YYYY-MM-DD');
      let endDate=values.endDate===undefined||values.endDate==null?'':values.endDate.format('YYYY-MM-DD');

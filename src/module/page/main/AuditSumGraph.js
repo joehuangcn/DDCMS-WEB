@@ -12,7 +12,7 @@ class AuditChart extends Component{
   componentDidMount(){
     ajaxUtil("urlencoded","audit-stat!getAuditSumLineChart.action","",this,(data,that) => {
       let chartList=data.data;
-      console.log('chartList',chartList);
+  
       this.setState({data:chartList});
     });
   }

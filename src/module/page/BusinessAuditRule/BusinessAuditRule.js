@@ -3,6 +3,7 @@ import {Table} from 'antd';
 import { Button, Icon,Popconfirm,message,DatePicker,Select,Input,TreeSelect } from 'antd';
 import {ajaxUtil} from '../../../util/AjaxUtils';
 import NewBizAuditRule from './NewBizAuditRule';
+import uuid from 'node-uuid';
 const {RangePicker} = DatePicker;
 const {Option} = Select;
 const {Search} =Input;
@@ -31,25 +32,28 @@ class BusinessAuditRule extends Component {
     this.fetch();
   }
 
-  download= (value) =>{
-    fetch("/DDCMS/business-audit-standard!downloadByReact.action",{
-      method:'POST',
-      credentials: 'include',
-      headers:{   "Content-Type": "application/x-www-form-urlencoded"},
-      body:"filename="+value
-    }).then(
-      (response) =>
-        response.json()
-  )
-    .then((responseJson) => {
-      if (responseJson.head) {
-           if (responseJson.head.stateCode === 400) {
-             message.error(responseJson.head.stateMes);
-          }
-        }
-    }).catch((error) => {
-    console.error(error);
-});
+  download= (row,value) =>{
+    message.info("正在下载,请稍后...");
+    let text="bid="+row.bid+"&filename="+value;
+    window.location.href="/DDCMS/business-audit-standard!downloadByReact.action?"+text;
+//     fetch("/DDCMS/business-audit-standard!downloadByReact.action",{
+//       method:'POST',
+//       credentials: 'include',
+//       headers:{   "Content-Type": "application/x-www-form-urlencoded"},
+//       body:"filename="+value
+//     }).then(
+//       (response) =>
+//         response.json()
+//   )
+//     .then((responseJson) => {
+//       if (responseJson.head) {
+//            if (responseJson.head.stateCode === 400) {
+//              message.error(responseJson.head.stateMes);
+//           }
+//         }
+//     }).catch((error) => {
+//     console.error(error);
+// });
   }
 
   getDynAction =() => {
@@ -76,7 +80,7 @@ class BusinessAuditRule extends Component {
           return (
             <div>{value}
             <span className="ant-divider"/>
-            <a onClick={()=> {this.download(value)}}>下载</a>
+            <a onClick={()=> {this.download(row,value)}}>下载</a>
           <span className="ant-divider"/>
           <Popconfirm title="你确定要删除该条记录?" okText="是" cancelText="否" onConfirm={() => {
             ajaxUtil("urlencoded","business-audit-standard!del.action","fileId="+row.auditPlanName,this,(data,that) => {
@@ -92,12 +96,11 @@ class BusinessAuditRule extends Component {
       dataIndex:'interfaceFormatName',
       key:'interfaceFormat',
       render :(value, row, index) => {
-        console.log("--------------------record",row);
         if (value !== '文件为空') {
           return (
             <div>{value}
             <span className="ant-divider"/>
-            <a onClick={()=> {this.download(value)}}>下载</a>
+            <a onClick={()=> {this.download(row,value)}}>下载</a>
           <span className="ant-divider"/>
           <Popconfirm title="你确定要删除该条记录?" okText="是" cancelText="否" onConfirm={() => {
             ajaxUtil("urlencoded","business-audit-standard!del.action","fileId="+row.interfaceFormat,this,(data,that) => {
@@ -196,11 +199,6 @@ class BusinessAuditRule extends Component {
     this.fetch();
   }
 
-
- // cowConfirm = (e) =>{
- //   console.log("e",e);
- //  //  ajaxUtil("urlencoded","business-audit-standard!dellist.action","id",)
- // }
 onStartChange =(date, dateString) => {
   this.setState({startDate:dateString});
 };
@@ -212,7 +210,7 @@ onSelectChange =(value) => {
   this.setState({query:value});
 };
 handleSearch =(value) => {
-  this.setState({queryKey:value},()=>{this.fetch});
+  this.setState({queryKey:value},()=>{this.fetch()});
 }
 
 loadTreeNode =() =>{
@@ -228,7 +226,7 @@ treeChange = (value) => {
       <div>
         <Button type='primary' onClick={this.handleModal} >新增</Button>
     <Button  onClick={this.reflash}><Icon type="sync" />刷新</Button>
-    <TreeSelect  placeholder='选择业务  单选框'
+    <TreeSelect  placeholder='选择业务'
       style={{ width: 200 }} allowClear
       treeData={this.state.treeData}  onChange={this.treeChange}/>
     <DatePicker  placeholder="开始时间" onChange={this.onStartChange}/>
@@ -238,11 +236,9 @@ treeChange = (value) => {
       <Option value="businessName">业务名称</Option>
       <Option value="jufang">局方负责人</Option>
     </Select>
-    <Search
-      placeholder="输入查询值"
-      style={{ width: 120 }}
-      onSearch={this.handleSearch} />
-    <Table columns={this.state.columns}  loading={this.state.loading} dataSource= {this.state.data}
+    <Search placeholder="输入查询值" style={{ width: 150 }}
+      onSearch={this.handleSearch}   enterButton />
+    <Table rowKey={()=>uuid.v1()} columns={this.state.columns}  loading={this.state.loading} dataSource= {this.state.data}
            pagination={this.state.pagination} onChange={this.handleTableChange} />
     <NewBizAuditRule  ref={(ref) => this.newbiz=ref }/>
   </div>

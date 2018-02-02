@@ -32,7 +32,6 @@ class LayoutRoute extends Component {
     }
 
     onCollapse=()=> {
-        // console.log(collapsed);
           // mode: collapsed ? 'vertical' : 'inline',
         this.setState({
             collapsed:!this.state.collapsed,

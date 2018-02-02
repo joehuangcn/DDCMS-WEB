@@ -6,6 +6,7 @@ import {ajaxUtil} from '../../../util/AjaxUtils';
 import "echarts/map/js/province/liaoning.js";
 const FormItem=Form.Item;
 const Option = Select.Option;
+
 class DiffInfoMap extends Component {
  constructor(props){
    super(props);
@@ -16,6 +17,7 @@ class DiffInfoMap extends Component {
      obtainDate:'',
      diffCode:'',
      netCode:'',
+     config:props.config,
      option:{
        title : {
          text: '',
@@ -85,15 +87,17 @@ componentWillMount(){
    this.fetch();
  }
  componentWillReceiveProps(props){
+   if (props.config.bizCode!== this.state.config.bizCode) {
+     this.setState({config:props.config},this.getHead) ;
    this.handleReset();
+ }
  }
 
   fetch=()=>{
     const {obtainDate,diffCode,netCode}=this.state;
-    const {bizCode}= this.props.config;
+    const {bizCode}= this.state.config;
     const text="obtainDate="+obtainDate+"&diffCode="+diffCode+"&netCode="+netCode+"&bizCode="+bizCode;
     ajaxUtil("urlencoded","data-analyze!getCityMapList.action",text,this,(data,that)  => {
-     console.log('fetch------data',data);
      let option=this.state.option;
      option.series[0].data=data.data;
      option.title.text=(data.obData==undefined?'':data.obData)+data.bizName+'地市差异情况';
@@ -104,9 +108,9 @@ componentWillMount(){
     });
  }
  getHead=()=> {
-   const {bizCode} =this.props.config;
+   const {bizCode} =this.state.config;
    ajaxUtil("urlencoded","data-analyze!getObtaindatatime.action","bizCode="+bizCode,this,(data,that)=>{
-     console.log(data);
+
      this.setState({obtainDateList:data.data});
    });
    ajaxUtil("urlencoded","data-analyze!getDiffCodeForAnalyze.action","bizCode="+bizCode,this,(data,that)=>{
@@ -141,7 +145,7 @@ handleSearch=(e) => {
     if (err) {
       return;
     }
-    console.log("----values",values);
+
     let obtainDate=values.obtainDate===undefined?'':values.obtainDate;
     // let diffCode=values.diffCode===undefined||values.diffCode==null?'':values.diffCode.format('YYYY-MM-DD');
     // let netCode=values.netCode===undefined||values.netCode==null?'':values.netCode.format('YYYY-MM-DD');
@@ -153,7 +157,7 @@ handleSearch=(e) => {
 
   render(){
     const {obtainDateList,diffCodeList,netCodeList} =this.state;
-    console.log('obtainDateList',obtainDateList);
+  
     return(
       <div>
         <SearchBut ref={(ref) => this.form = ref} handleSearch={this.handleSearch} handleReset={this.handleReset}  obtainDateList={this.state.obtainDateList}

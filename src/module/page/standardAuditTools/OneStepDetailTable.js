@@ -152,7 +152,6 @@ class OneStepDetailTable extends Component{
      if (err) {
        return;
      }
-     console.log(values);
      let cityCode=values.queryCity===undefined?'':values.queryCity;
      let startDate=values.startDate===undefined||values.startDate==null?'':values.startDate.format('YYYY-MM-DD');
      let endDate=values.endDate===undefined||values.endDate==null?'':values.endDate.format('YYYY-MM-DD');
@@ -182,7 +181,6 @@ handleTableChange = (pagination, filters, sorter) => {
 }
 
 exportMes=(e)=>{
-  console.log(e);
    const {config,permission} = this.props;
    let synId='';
    let downflag='';
@@ -218,7 +216,7 @@ exportMes=(e)=>{
  }
 
  onSelectChange = (selectedRowKeys) => {
-    console.log('selectedRowKeys changed: ', selectedRowKeys);
+
     this.setState({ selectedRowKeys });
   }
 

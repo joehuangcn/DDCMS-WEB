@@ -98,7 +98,6 @@ class NewAddRole extends Component {
                 confirmLoading:true,
             });
             let bid=this.state.record.role_id ? this.state.record.role_id:'';
-            console.log("----------------bid-----------",bid);
             const text="role.roleName="+values.roleMange.roleName
                 +"&role.roleDescription="+values.roleMange.roleDescription
                 +"&role.statu="+values.roleMange.statu

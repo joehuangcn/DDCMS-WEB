@@ -150,7 +150,6 @@ class SynCheck extends Component{
     });
   }
   showModal =(action,record,config) => {
-    console.log(config);
    this.setState({
      visible:true,
      record:record,
@@ -211,7 +210,6 @@ class SynCheck extends Component{
       //     }
       //     this.props.refresh();
       // });
-        console.log(text);
     });
   }
 

@@ -57,7 +57,7 @@ class DiffDealInfo extends Component {
   }
   // 初始化
   getInitProps=(props)=>{
-   //  console.log(props);
+
      const {state}=props.location;
      let permission=[];
      ajaxUtil("urlencoded","permiss!getUserBtnPermissByResid.action","resid="+state.id, this,(data,that)=>{
@@ -75,7 +75,6 @@ class DiffDealInfo extends Component {
    }
 
    handleFocus() {
-    console.log('focus');
     ajaxUtil("urlencoded","constant!getCityCodeEntryAllList.action","",this,(data,that)=>{
       this.setState({citys:data.data});
     });
@@ -206,7 +205,6 @@ class DiffDealInfo extends Component {
 
   // 请求查询method
   fetch = ( params ={} ) => {
-    console.log('params',params);
     this.setState({loading:true}) ;
     let page=0;
     if (params.page>1) {
@@ -280,7 +278,7 @@ class DiffDealInfo extends Component {
      if (err) {
        return;
      }
-     console.log("----values",values);
+
      let bizCode=values.bizCode===undefined?'':values.bizCode;
      let obDate=values.obDate===undefined?'':values.obDate;
      let diffCode=values.diffCode===undefined?'':values.diffCode;
@@ -291,7 +289,7 @@ class DiffDealInfo extends Component {
   }
 
   exportMes=(e)=>{
-    console.log(e);
+    
      const {bizCode,obDate,diffCode,cityCode,removeZero,pagination}=this.state;
      let page=0;
      if (pagination.current>1) {

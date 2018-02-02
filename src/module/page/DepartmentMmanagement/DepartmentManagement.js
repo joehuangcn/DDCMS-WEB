@@ -24,7 +24,6 @@ class DepartmentManagement extends Component {
     }
     // 初始化
     getInitProps=(props)=>{
-     //  console.log(props);
        const {state}=props.location;
        let permission=[];
        if (state===null|| state===undefined) {
@@ -52,27 +51,6 @@ class DepartmentManagement extends Component {
     }
     componentDidMount=() => {
         this.fetch();
-    };
-
-    download= (value) =>{
-        fetch("/DDCMS/business-audit-standard!downloadByReact.action",{
-            method:'POST',
-            credentials: 'include',
-            headers:{   "Content-Type": "application/x-www-form-urlencoded"},
-            body:"filename="+value
-        }).then(
-            (response) =>
-                response.json()
-        )
-            .then((responseJson) => {
-                if (responseJson.head) {
-                    if (responseJson.head.stateCode === 400) {
-                        message.error(responseJson.head.stateMes);
-                    }
-                }
-            }).catch((error) => {
-            console.error(error);
-        });
     };
 
     getDynAction =() => {
@@ -161,7 +139,6 @@ class DepartmentManagement extends Component {
     };
 
     fetch = ( params ={} ) => {
-        console.log('params',params);
         this.setState({loading:true}) ;
         let page=0;
         if (params.page>1) {

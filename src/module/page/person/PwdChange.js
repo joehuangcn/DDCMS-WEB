@@ -140,7 +140,6 @@ class PwdChange extends Component{
       });
       const text="old_password="+values.oldOne
       +"&new_password="+values.newOne
-      console.log(text);
       ajaxUtil("urlencoded","personAction!updatePwd.action",text,this,(data,that) => {
         let status=data.success;
         let message= data.message;

@@ -37,7 +37,7 @@ class BizAuditFormModal extends Component {
         const action = this.props.action;
         const {color} =this.props;
         const {displayColorPicker,colorValue}=this.state;
-        console.log('---');
+
         return(
             <div>
                 <Form>
@@ -104,7 +104,7 @@ export default  class LevItem extends Component {
             if (err) {
                 return;
             }
-            console.log("----values",values);
+      
 
             this.setState({
                 confirmLoading:true,

@@ -42,7 +42,7 @@ class AuditTask extends Component {
   }
 
   doTimer=()=>{
-      this.timer=setInterval(()=>{this.reflash()},5000);
+      this.timer=setInterval(()=>{this.reflash()},60000);
   }
 
 // 渲染工作
@@ -208,7 +208,7 @@ renderFlowStatu=(value) =>{
 
 // 初始化
 getInitProps=(props)=>{
- //  console.log(props);
+
    const {state}=props.location;
    let permission=[];
    ajaxUtil("urlencoded","permiss!getUserBtnPermissByResid.action","resid="+state.id, this,(data,that)=>{
@@ -242,7 +242,7 @@ getSearchCondition=() => {
 
 // 请求查询method
 fetch = ( params ={} ) => {
-  console.log('params',params);
+
   this.setState({loading:true}) ;
   let page=0;
   if (params.page>1) {
@@ -331,7 +331,7 @@ handleModal= () => {
     return(
       <div>
       <Button type='primary' onClick={this.handleModal} disabled={this.state.addBtnPermiss}>新增</Button>
-      <Button  onClick={this.reflash}><Icon type="sync" />刷新</Button>
+    <Button  onClick={this.reflash}><Icon type="sync" />查询</Button>
       <Select  placeholder="任务类型" style={{ width: 120 }} onChange={this.handleTaskTypeChange} allowClear={true}>
         {taskTypeList.map(d=> <Option key={d.dicCode} value={d.dicCode}>{d.dicName}</Option>)}
       </Select>

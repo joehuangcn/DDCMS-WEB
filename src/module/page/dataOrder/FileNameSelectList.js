@@ -97,7 +97,6 @@ class FileNameSelectList extends Component {
 
   // 请求查询method
   fetch = ( params ={} ) => {
-    console.log('params',params);
     this.setState({loading:true}) ;
     let page=0;
     if (params.page>1) {

@@ -177,7 +177,6 @@ class Xhssjb extends Component {
     }
 
     fetch = ( params ={} ) => {
-        console.log('params',params);
         this.setState({loading:true}) ;
         let page=0;
         if (params.page>1) {
@@ -234,7 +233,6 @@ class Xhssjb extends Component {
 
 
     cowConfirm = (e) =>{
-        console.log("e",e);
           ajaxUtil("urlencoded","xhssjb!getJsonList.action?tableName=xhssjb","id",)
     }
     onStartChange =(date, dateString) => {

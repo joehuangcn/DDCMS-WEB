@@ -210,7 +210,7 @@ class BizAuditFormModal extends Component {
      // console.log(this.props.form);
      // console.log(this.props.form.getFieldValue('auditTask.bizCode'));
    // this.props.form.setFieldsValue({'auditTask.auditTaskName':value});
-   console.log(value);
+  //  console.log(value);
   //  this.gethandleSwith(value);
    ajaxUtil("urlencoded","cy-detail!getObtaindatatimeByBizCode.action","bizCode="+value,this,(data,that)=>{
      this.setState({obTimeList:data.data});
@@ -405,7 +405,7 @@ class AuditDiffOrder extends Component {
               +"&uploadMd5"+j+"="+uploadMd5
               +"&uploadName"+j+"="+uploadName;
         }
-        console.log(values);
+        // console.log(values);
 
         let uploadName=""; let uploadMd5="";
         if (values.upload.status==='done') {

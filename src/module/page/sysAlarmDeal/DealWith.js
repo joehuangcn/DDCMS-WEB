@@ -128,7 +128,6 @@ class DealWith extends Component {
     }
 
     fetch = ( params ={} ) => {
-        console.log('params',params);
         this.setState({loading:true}) ;
         let page=0;
         if (params.page>1) {

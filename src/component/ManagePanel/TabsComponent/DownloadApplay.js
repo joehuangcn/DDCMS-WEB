@@ -143,7 +143,6 @@ class DownloadApplay extends Component{
   }
 
   show = (obj) => {
-    console.log(obj);
     this.setState({
       visible:true,
       record:["statu":"0",],
@@ -151,7 +150,7 @@ class DownloadApplay extends Component{
     });
   }
   showModal =(action,record,config) => {
-    console.log(config);
+
    this.setState({
      visible:true,
      record:record,
@@ -191,28 +190,28 @@ class DownloadApplay extends Component{
       +"&dataScope="+config.dataScope
       +"&dataType="+config.dataType
       +"&fileName="+uploadName+"&fileNameMd5="+uploadBid;
-      // ajaxUtil("urlencoded","syn!submitSynNew.action",text,this,(data,that) => {
-      //   let status=data.success;
-      //   let message= data.message;
-      //   this.setState({
-      //     visible: false,
-      //     confirmLoading: false,
-      //   });
-      //   this.form.resetFields();
-      //     if (status===true) {
-      //       Modal.success({
-      //        title: '消息',
-      //        content: message,
-      //       });
-      //     }else {
-      //       Modal.error({
-      //         title: '消息',
-      //         content: message,
-      //      });
-      //     }
-      //     this.props.refresh();
-      // });
-        console.log(text);
+      ajaxUtil("urlencoded","syn!submitSynNew.action",text,this,(data,that) => {
+        let status=data.success;
+        let message= data.message;
+        this.setState({
+          visible: false,
+          confirmLoading: false,
+        });
+        this.form.resetFields();
+          if (status===true) {
+            Modal.success({
+             title: '消息',
+             content: message,
+            });
+          }else {
+            Modal.error({
+              title: '消息',
+              content: message,
+           });
+          }
+          this.props.refresh();
+      });
+
     });
   }
 
