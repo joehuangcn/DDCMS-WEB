@@ -1,10 +1,9 @@
 import React,{Component} from 'react'
-import { Table,Form, Input, Button,Modal,Upload ,Icon,Select,Divider,Card} from 'antd';
+import { Form, Button,Modal,Divider,Card,Spin} from 'antd';
 import UploadFile from '../../../component/uploadFile/UploadFile';
 import {ajaxUtil} from '../../../util/AjaxUtils';
 import uuid from 'node-uuid';
 const FormItem = Form.Item;
-const { Meta } = Card;
 const formItemLayout = {
   labelCol: { span: 5 },
   wrapperCol: { span: 16 },
@@ -16,6 +15,7 @@ class FlowChart extends Component {
       super(props);
       this.state={
         visible:false,
+        spinning:false,
       }
     }
 
@@ -67,10 +67,18 @@ class FlowChart extends Component {
       this.setState({visible:true});
     }
 
+    handleRefresh=() =>{
+      this.setState({spinning:true});
+      setTimeout(()=>{this.setState({spinning:false})}, 1000);
+    }
+
+    setTime=() =>{
+
+    }
 
     render() {
       const {config} = this.props;
-      const {visible,confirmLoading}=this.state;
+      const {visible,confirmLoading,spinning}=this.state;
       return (
         <div>
         <Button type="primary" onClick={this.handleSearch}>上传新图片</Button>
@@ -93,7 +101,7 @@ class FlowChart extends Component {
       const { getFieldDecorator} = this.props.form;
       // const record = this.props.record;
       // const action = this.props.action;
-      const {auditTypeList}=this.props;
+      // const {auditTypeList}=this.props;
       const file1="Myfile";
       const url="flow-chart!uploadFile.action";
       const deleteUrl="flow-chart!deletedFile.action";

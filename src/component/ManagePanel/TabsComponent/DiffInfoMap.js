@@ -1,6 +1,6 @@
 import React,{Component} from 'react';
 import ReactEcharts from 'echarts-for-react';
-import {Select,DatePicker,Form,Button,Icon,Table,Checkbox} from 'antd';
+import {Select,Form,Button,Icon} from 'antd';
 import { Row, Col } from 'antd';
 import {ajaxUtil} from '../../../util/AjaxUtils';
 import "echarts/map/js/province/liaoning.js";
@@ -100,7 +100,7 @@ componentWillMount(){
     ajaxUtil("urlencoded","data-analyze!getCityMapList.action",text,this,(data,that)  => {
      let option=this.state.option;
      option.series[0].data=data.data;
-     option.title.text=(data.obData==undefined?'':data.obData)+data.bizName+'地市差异情况';
+     option.title.text=(data.obData===undefined?'':data.obData)+data.bizName+'地市差异情况';
      option.visualMap.max=data.maxNum;
       this.setState({
           option
@@ -156,8 +156,6 @@ handleSearch=(e) => {
 }
 
   render(){
-    const {obtainDateList,diffCodeList,netCodeList} =this.state;
-  
     return(
       <div>
         <SearchBut ref={(ref) => this.form = ref} handleSearch={this.handleSearch} handleReset={this.handleReset}  obtainDateList={this.state.obtainDateList}

@@ -87,13 +87,22 @@ class NetTableConfig extends Component {
 
   }
   handleAdd = () =>{
-    const {dataSource,tableInfo,count}=this.state;
+    const {dataSource,tableInfo,count,bizCode}=this.state;
+    if (tableInfo.bizCode===undefined||tableInfo.bizCode===''||tableInfo.netEleCode==='') {
+      message.error("请先选择业务与网元");
+    }else{
     let id=uuid.v1();
     const newData={fieldName:'',fieldType:'',fieldNameCh:'',isKey:'',forder:dataSource.length+1,id:id.replace(/[-]/g,''),...tableInfo}
     this.setState({dataSource:[...dataSource,newData]});
   }
+  }
   handleSave= () =>{
+    const {dataSource,tableInfo,count,bizCode}=this.state;
+    if (tableInfo.bizCode===undefined||tableInfo.bizCode===''||tableInfo.netEleCode==='') {
+      message.error("请先选择业务与网元");
+    }else{
     this.setState({visible:true});
+  }
   }
 
   onCellChange = (key, dataIndex) => {
@@ -217,7 +226,7 @@ handleSeclectChange=(value) =>{
 }
 
   handleRenderEditType=(value,type,selectList)=>{
-  
+
     switch (type) {
       case 'input':
       return (

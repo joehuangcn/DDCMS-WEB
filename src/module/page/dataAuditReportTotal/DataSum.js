@@ -1,5 +1,5 @@
 import React,{Component} from 'react'
-import {Table,Menu,Form,Row,Col,Select,Button,Icon,TreeSelect,DatePicker,Dropdown,message} from 'antd'
+import {Table,Menu,Form,Row,Col,Select,Button,Icon,TreeSelect,DatePicker,Dropdown,message,Popconfirm} from 'antd'
 import {ajaxUtil} from '../../../util/AjaxUtils';
 import uuid from 'node-uuid';
 const FormItem=Form.Item;
@@ -240,22 +240,22 @@ class StatSearch extends Component {
         <Col span={4}>
          <FormItem {...formItemLayout} label="开始时间" >
            {getFieldDecorator("startDate")(
-               <DatePicker className='1111' placeholder="开始时间" style={{width:150}}/>
+               <DatePicker className='1111' placeholder="开始时间" style={{width:130}}/>
            )}
          </FormItem>
          </Col>
          <Col span={4} >
           <FormItem {...formItemLayout} label="结束时间">
             {getFieldDecorator("endDate")(
-                <DatePicker  placeholder="结束时间" style={{width:150}}/>
+                <DatePicker  placeholder="结束时间" style={{width:130}}/>
             )}
           </FormItem>
           </Col>
-         <Col span={6} style={{ textAlign: 'right',}} >
+         <Col span={6}  >
            <Button type="primary" onClick={this.props.handleSearch}>查询</Button>
            <Button style={{ marginLeft: 8 }} onClick={this.props.handleReset}> 重置</Button>
-           <div style={{display:expBtnPermiss}}>
-           <Dropdown overlay={menu} style={{ marginLeft: 16}}>
+           <div style={{display:expBtnPermiss,marginLeft: 16}}>
+           <Dropdown overlay={menu} >
               <Button>
                 <Icon type="file-excel" />导出<Icon type="down" />
               </Button>

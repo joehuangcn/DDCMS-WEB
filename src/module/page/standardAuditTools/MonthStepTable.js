@@ -1,10 +1,8 @@
 import React,{Component} from 'react'
-import {Table,Menu,Form,Row,Col,Select,Button,Icon,TreeSelect,DatePicker,Dropdown,message} from 'antd'
+import {Table,Menu,Form,Row,Col,Select,Button,Icon,DatePicker,Dropdown,message} from 'antd'
 import {ajaxUtil} from '../../../util/AjaxUtils';
-import uuid from 'node-uuid';
 import WholeNetUpload from "./WholeNetUpload";
 const FormItem=Form.Item;
-const Option = Select.Option;
 
 class MonthStepTable extends Component{
   constructor(props){
@@ -111,7 +109,7 @@ class MonthStepTable extends Component{
   }
 
   renderRate=(text) =>{
-    if (text==""||text===undefined) {
+    if (text===""||text===undefined) {
        return "";
     }else
       return text+"%";
@@ -129,7 +127,7 @@ class MonthStepTable extends Component{
      }
      let dir='DESC';
      if (typeof(params.sortOrder) !== "undefined" ) {
-       dir=(params.sortOrder=="descend"?"desc":"asc");
+       dir=(params.sortOrder==="descend"?"desc":"asc");
      }
     //  const {config} = this.props;
     const {startDate,endDate}=this.state;
@@ -182,7 +180,7 @@ handleTableChange = (pagination, filters, sorter) => {
 }
 
 exportMes=(e)=>{
-   const {config,permission} = this.props;
+   const {permission} = this.props;
    let synId='';
    let downflag='';
    const {startDate,endDate}=this.state;

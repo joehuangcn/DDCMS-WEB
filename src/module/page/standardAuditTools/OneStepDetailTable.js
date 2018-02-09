@@ -1,10 +1,8 @@
 import React,{Component} from 'react'
-import {Table,Menu,Form,Row,Col,Select,Button,Icon,TreeSelect,DatePicker,Dropdown,message} from 'antd'
+import {Table,Menu,Form,Row,Col,Select,Button,Icon,DatePicker,Dropdown,message} from 'antd'
 import {ajaxUtil} from '../../../util/AjaxUtils';
-import uuid from 'node-uuid';
 import WholeNetUpload from "./WholeNetUpload";
 const FormItem=Form.Item;
-const Option = Select.Option;
 
 class OneStepDetailTable extends Component{
   constructor(props){
@@ -108,7 +106,7 @@ class OneStepDetailTable extends Component{
   }
 
   renderRate=(text) =>{
-    if (text==""||text===undefined) {
+    if (text===""||text===undefined) {
        return "";
     }else
       return text+"%";
@@ -126,7 +124,7 @@ class OneStepDetailTable extends Component{
      }
      let dir='DESC';
      if (typeof(params.sortOrder) !== "undefined" ) {
-       dir=(params.sortOrder=="descend"?"desc":"asc");
+       dir=(params.sortOrder==="descend"?"desc":"asc");
      }
     //  const {config} = this.props;
     const {startDate,endDate}=this.state;
@@ -181,9 +179,8 @@ handleTableChange = (pagination, filters, sorter) => {
 }
 
 exportMes=(e)=>{
-   const {config,permission} = this.props;
+   const {permission} = this.props;
    let synId='';
-   let downflag='';
    const {startDate,endDate}=this.state;
    let text="type=0&startDate="+startDate+"&endDate="+endDate;
    if (e.key==='1') {
@@ -203,7 +200,7 @@ exportMes=(e)=>{
 
  uploadMes=(e) =>{
    const {permission} = this.props;
-   if (permission.indexOf('upLoad')==-1) {
+   if (permission.indexOf('upLoad')===-1) {
      message.error("暂无该上传权限！！！！！！");
    }else {
    if (e.key==='1') {
@@ -248,10 +245,6 @@ class StatSearch extends Component {
    const formItemLayout = {
      labelCol: { span: 10 },
      wrapperCol: { span: 14 },
-   };
-   const cityItemLayout = {
-     labelCol: { span: 7 },
-     wrapperCol: { span: 7 },
    };
    const menu = (
       <Menu onClick={this.props.exportMes}>

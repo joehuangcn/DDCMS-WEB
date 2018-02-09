@@ -83,6 +83,21 @@ class TableList extends Component {
         this.setState({columns:firtColumns});
       }
 
+      handleTableChange = (pagination, filters, sorter) => {
+          const pager = {...this.state.pagination};
+          pager.current=pagination.current;
+          this.setState({
+              pagination:pager,
+          });
+          this.fetch({
+              results: pagination.pageSize,
+              page: pagination.current,
+              sortField: sorter.field,
+              sortOrder: sorter.order,
+              ...filters,
+          });
+      }
+
       fetch = (params = {}) => {
          this.setState({loading:true});
          let page=0;
@@ -183,6 +198,21 @@ class TableMonthList extends Component {
         this.setState({columns:firtColumns});
       }
 
+      handleTableChange = (pagination, filters, sorter) => {
+          const pager = {...this.state.pagination};
+          pager.current=pagination.current;
+          this.setState({
+              pagination:pager,
+          });
+          this.fetch({
+              results: pagination.pageSize,
+              page: pagination.current,
+              sortField: sorter.field,
+              sortOrder: sorter.order,
+              ...filters,
+          });
+      }
+
       fetch = (params = {}) => {
          this.setState({loading:true});
          let page=0;
@@ -227,7 +257,7 @@ class TableMonthList extends Component {
          if (err) {
            return;
          }
-    
+
          let startDate=values.startDate===undefined||values.startDate==null?'':values.startDate.format('YYYY-MM-DD');
          let endDate=values.endDate===undefined||values.endDate==null?'':values.endDate.format('YYYY-MM-DD');
          this.setState({startDate,endDate},()=>{this.fetch()});

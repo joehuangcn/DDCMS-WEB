@@ -1,6 +1,7 @@
 import React,{Component} from 'react'
 import {Table,Form,Row,Col,Button,Icon,DatePicker,message,Input,Select} from 'antd'
 import {ajaxUtil} from '../../../util/AjaxUtils';
+import uuid from 'node-uuid';
 const FormItem=Form.Item;
 const Option=Select.Option;
 class ActionLogInfo extends Component{
@@ -13,6 +14,7 @@ class ActionLogInfo extends Component{
       pagination:{pageSize:15},
       selectedRowKeys:[],
       optTime:'',userName:'',
+      queryKey:'',query:'',
       permission:[],
     }
   }
@@ -28,9 +30,9 @@ class ActionLogInfo extends Component{
   getDynColumnHead =() =>{
 
     const firtColumns =[
-      {title: '创建时间',dataIndex: 'operateTime', key: 'operateTime',width:160},
-      {title: '文件名',dataIndex: 'opperlog',key: 'opperlog',width:150},
-      {title:'业务代码',dataIndex:'params',key:'params',width:300,}
+      {title: '创建时间',dataIndex: 'createDate', key: 'createDate',width:160},
+      {title: '文件名',dataIndex: 'fileName',key: 'fileName',width:300},
+      {title:'业务代码',dataIndex:'code',key:'code',width:150,}
     ]
     this.setState({columns:firtColumns});
   }
@@ -121,7 +123,7 @@ handleTableChange = (pagination, filters, sorter) => {
         <div>
         <SearchBut ref={(ref) => this.form = ref}  handleSearch={this.handleSearch}
         handleReset={this.handleReset} exportMes={e =>this.exportMes(e)} />
-        <Table rowKey='l_id' loading={loading} rowSelection={rowSelection} columns={columns} pagination={pagination} dataSource={data}
+        <Table rowKey={()=>(uuid.v1())} loading={loading}  columns={columns} pagination={pagination} dataSource={data}
           onChange={this.handleTableChange} />
         </div>);
   }
@@ -144,7 +146,7 @@ class StatSearch extends Component {
         <Col span={6}>
          <FormItem {...formItemLayout} label="查询选项" >
            {getFieldDecorator("queryKey")(
-             <Select  placeholder="选择地市" style={{ width: 120 }} allowClear={true}>
+             <Select  placeholder="选择类型" style={{ width: 120 }} allowClear={true}>
              <Option key="fileName" value="fileName">文件名称</Option>
              </Select>
            )}

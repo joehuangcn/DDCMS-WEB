@@ -263,7 +263,7 @@ renderToPerson= (text) =>{
 renderUpfile= (text,record) =>{
   if (text===undefined) {
     return "";
-  }else if (text.value==='文件为空11') {
+  }else if (text.value==='文件为空') {
     return text.value;
   }else {
     return <span>{text.value} <Button shape='circle'  type="primary" size='small' onClick={()=>{this.handleDownloadFile(text.key,record.woid)}}>

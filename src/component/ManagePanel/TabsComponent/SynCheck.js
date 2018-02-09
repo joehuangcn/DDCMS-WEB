@@ -1,17 +1,11 @@
 import React,{Component} from 'react'
-import { Form, Input, Button,Modal,Upload ,Icon,Select,Row,Col,InputNumber,Radio,Switch,Divider} from 'antd';
+import { Form, Input,Modal,Select,Row,Col,Radio,Divider} from 'antd';
 import { ajaxUtil} from '../../../util/AjaxUtils';
 import UploadFile from '../../../component/uploadFile/UploadFile';
-import uuid from 'node-uuid';
-import Moment from 'moment';
 const FormItem = Form.Item;
 const {Option} = Select;
 const RadioGroup = Radio.Group;
 const { TextArea } = Input;
-const formItemLayout = {
-  labelCol: { span: 10 },
-  wrapperCol: { span: 16 },
-};
 const fileList = [
   {dicCode:'all',dicName:'上传全部此类差异'},
   {dicCode:'file',dicName:'上传指定文件'}
@@ -61,6 +55,8 @@ class  NetInfoModal extends Component {
   selectCheck=(value,option) =>{
       if (value==="file") {
           this.setState({show:'inline'});
+      }else{
+      this.setState({show:'none'});
       }
   }
 
@@ -164,9 +160,9 @@ class SynCheck extends Component{
       if (err) {
         return;
       }
-      // this.setState({
-      //   confirmLoading:true,
-      // });
+      this.setState({
+        confirmLoading:true,
+      });
       const {config,record}=this.state;
       let uploadBid="";
       let uploadName="";
@@ -175,41 +171,42 @@ class SynCheck extends Component{
          uploadName=values.upload.response.name;
       }
 
-      const text="bizcode="+record.BIZCODE
-      +"&diffCode="+record.DIFFCODE
-      +"&obtainDataTime="+record.OBTAINDATATIME
-      +"&needRename="+record.needRename
-      +"&operType="+record.operType
-      +"&diffnum="+record.DIFFNUM
-      +"&auditTime="+record.AUDITTIME
-      +"&cityCode="+record.CITYCODE
-      +"&synType="+values.synReviewLog.passOrNot
-      +"&DID="+record.DID
+      const text="DID="+record.DID
+      +"&synAdvice="+values.synReviewLog.passOrNot+"&synScope="+values.synReviewLog.synScope
+      +"&synType="+"&synTarget="+
+      +"&bizcode="+record.BIZCODE
       +"&auditType="+config.auditType
       +"&dataScope="+config.dataScope
       +"&dataType="+config.dataType
+      +"&diffCode="+record.DIFFCODE
+      +"&obtainDataTime="+record.OBTAINDATATIME
+      +"&operType="+record.operType
+      +"&needRename="+record.needRename
+      +"&diffnum="+record.DIFFNUM
+      +"&auditTime="+record.AUDITTIME
+      +"&cityCode="+record.CITYCODE
       +"&fileName="+uploadName+"&fileNameMd5="+uploadBid;
-      // ajaxUtil("urlencoded","syn!submitSynNew.action",text,this,(data,that) => {
-      //   let status=data.success;
-      //   let message= data.message;
-      //   this.setState({
-      //     visible: false,
-      //     confirmLoading: false,
-      //   });
-      //   this.form.resetFields();
-      //     if (status===true) {
-      //       Modal.success({
-      //        title: '消息',
-      //        content: message,
-      //       });
-      //     }else {
-      //       Modal.error({
-      //         title: '消息',
-      //         content: message,
-      //      });
-      //     }
-      //     this.props.refresh();
-      // });
+      ajaxUtil("urlencoded","syn!submitSynNew.action",text,this,(data,that) => {
+        let status=data.success;
+        let message= data.message;
+        this.setState({
+          visible: false,
+          confirmLoading: false,
+        });
+        this.form.resetFields();
+          if (status===true) {
+            Modal.success({
+             title: '消息',
+             content: message,
+            });
+          }else {
+            Modal.error({
+              title: '消息',
+              content: message,
+           });
+          }
+          this.props.refresh();
+      });
     });
   }
 
@@ -218,7 +215,7 @@ class SynCheck extends Component{
     return(
       <div>
        <Modal visible={visible} onOk={this.handleOk} onCancel={this.handleCancel} width={500}
-              title="审核" confirmLoading={confirmLoading} okText="保存">
+              title="上传" confirmLoading={confirmLoading} okText="保存">
        <BusForm ref={(ref) => this.form = ref}  record={this.state.record} action={this.state.action} />
        </Modal>
       </div>

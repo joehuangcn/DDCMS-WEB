@@ -221,14 +221,15 @@ loadTreeNode =() =>{
 treeChange = (value) => {
 }
 
+// <TreeSelect  placeholder='选择业务'
+//   style={{ width: 200 }} allowClear
+//   treeData={this.state.treeData}  onChange={this.treeChange}/>
+
   render(){
     return(
       <div>
         <Button type='primary' onClick={this.handleModal} >新增</Button>
     <Button  onClick={this.reflash}><Icon type="sync" />刷新</Button>
-    <TreeSelect  placeholder='选择业务'
-      style={{ width: 200 }} allowClear
-      treeData={this.state.treeData}  onChange={this.treeChange}/>
     <DatePicker  placeholder="开始时间" onChange={this.onStartChange}/>
     <DatePicker  placeholder="结束时间" onChange={this.onEndChange}/>
     <Select style={{ width: 120 }} onChange={this.onSelectChange}  allowClear placeholder="选择查询字段">

@@ -47,6 +47,7 @@ class  AuditSync extends Component {
       selectedDown:[],
       abletodown:false,
       config:props.config,
+      id:props.id,
     }
   }
 
@@ -57,7 +58,8 @@ class  AuditSync extends Component {
 
   componentWillReceiveProps(props){
      if (props.config.bizCode!== this.state.config.bizCode) {
-       this.setState({config:props.config});
+       this.setState({config:props.config,
+                        id:props.id });
        this.handleReset();
     }
   }
@@ -87,7 +89,15 @@ class  AuditSync extends Component {
      if (params.page>1) {
        page=(params.page-1)*10;
      }
-     const {config} = this.props;
+     let sort='AUDITTIME';
+     if (typeof(params.sortField) !== "undefined" ) {
+       sort=params.sortField;
+     }
+     let dir='DESC';
+     if (typeof(params.sortOrder) !== "undefined" ) {
+       dir=(params.sortOrder=="descend"?"desc":"asc");
+     }
+     const {config,id} = this.props;
      const text="auditDate="+this.state.startDate
      +"&endDate="+this.state.endDate
      +"&cityCode="+this.state.queryCity
@@ -98,7 +108,7 @@ class  AuditSync extends Component {
      +"&dataScope="+config.dataScope
      +"&dataType="+config.dataType
      +"&bizCodeParam="+config.bizCode
-     +"&start="+page+"&limit=10";
+     +"&start="+page+"&limit=10&sort="+sort+"&dir="+dir+"&nodeKey="+id;
 
      ajaxUtil("urlencoded","audit-stat!getAuditDiffDetailList.action",text,this,(data,that)  => {
        const pagination = that.state.pagination;
@@ -128,8 +138,8 @@ class  AuditSync extends Component {
       {  title:'牵头处理单位',dataIndex:'HANDLE_COMPANY',key:'handleCompany',  width:200},
       {  title:'差异处理方法',  dataIndex:'DIFF_HANDLE_METHOD',  key:'diffHandleMethod',  width:300},
       {  title:'用户是否感知',dataIndex:'IS_USER_KNOWN',  key:'isUserKnown',width:150},
-      {  title:'下载',dataIndex: 'down',  key: 'down',width:150,render:(record) =>(this.renderDownTxt(record))},
-      {  title:'上传审核',dataIndex:'diffReview',  key:'diffReview',width:100 ,render:(text,record) =>(this.renderCheckReview(text,record)) },
+      {  title:'下载',dataIndex: 'down',  key: 'down',width:150,render:(text,record) =>(this.renderDownTxt(text,record))},
+      {  title:'上传审核',dataIndex:'DIFFREVIEW',  key:'diffReview',width:100 ,render:(text,record) =>(this.renderCheckReview(text,record)) },
       {  title:'上传',  dataIndex:'DIFFSYN',  key:'diffSyn',width:100 ,render:(text,record) =>(this.renderSyn(text,record)) },
       {  title:'上传状态',dataIndex:'passOrNot',  key:'passOrNot',  width:150,render:(text) =>(this.renderPassNot(text))}
     ]
@@ -142,19 +152,19 @@ class  AuditSync extends Component {
   renderPassNot=(text) =>{
     switch (text) {
       case '0':
-          return "差异上传通过审核"; break;
+          return "差异上传通过审核";
       case '1':
-          return "差异上传审核未通过"; break;
+          return "差异上传审核未通过";
       case '2':
-           return "差异数据已经生成"; break;
+           return "差异数据已经生成";
       case '3':
-          return "差异下载已审批"; break;
+          return "差异下载已审批";
       case '4':
-          return "差异数据已经下载"; break;
+          return "差异数据已经下载";
       case '5':
-          return "差异数据已上传"; break;
+          return "差异数据已上传";
       case '6':
-          return "处理结果已反馈"; break;
+          return "处理结果已反馈";
       default:
         return "";
     }
@@ -182,7 +192,7 @@ class  AuditSync extends Component {
           message.error("获取4A申请地址出错.");
         }else{
         var rets=ret.split("|");
-        if("0"==rets[0]){
+        if("0"===rets[0]){
           message.info("申请下载权限成功");
           this.setState({abletodown:true});
         }
@@ -215,7 +225,7 @@ class  AuditSync extends Component {
  renderDownTxt =(text,record) =>{
    const {config}=this.props;
    const {abletodown}=this.state;
-   if (abletodown==true) {
+   if (abletodown===true||text==='able'||text==='temp') {
      let value=config.dataScope+"|"+record.CITYCODE+"|"+record.DATATYPE+"|"+record.DIFFTYPE
      +"|"+record.AUDITTIME+"|"+record.OBTAINDATATIME+"|"+record.DID;
      return <Row>
@@ -246,16 +256,12 @@ class  AuditSync extends Component {
     switch (text) {
       case 'NoDeedReView':
             return '不需要审核';
-        break;
       case 'noPass':
             return '审核未过';
-        break;
        case 'hasPass':
             return '审核通过';
-          break;
         case 'noPermReview':
             return  '无权限';
-          break;
       default:
         return <Button type="primary" onClick={() =>this.handleReview(record)}>审核</Button>; break;
     }
@@ -265,22 +271,17 @@ class  AuditSync extends Component {
     switch (text) {
       case 'hasSyn':
             return '已上传';
-        break;
       case 'NoNeedAudit':
             return '自动上传';
-        break;
        case 'disabled':
             return '上传(无权限)';
-          break;
         case 'noPass':
             return  '审核未过';
-          break;
         case 'overTime':
             return "数据超时";
-          break;
+            // return <Button type="primary" onClick={() =>this.handleSyn(record)}>上传</Button>;
           case "able":
-              return <Button type="primary" onClick={() =>this.handleSyn(record)}>上传</Button>; break;
-            break;
+              return <Button type="primary" onClick={() =>this.handleSyn(record)}>上传</Button>;
       default:
         return "上传(暂无权限)";
     }
@@ -306,7 +307,8 @@ class  AuditSync extends Component {
         message.info("正在下载,请稍后!!!!!");
          //let text="diffList="+selectedDown;
         // window.location.href="/DDCMS/syn-log!downloadDiffDetail.action?diffList="+selectedDiff;
-        window.location.href="/DDCMS/audit-stat!downloadAllSelectedDiff.action?difflist="+selectedDown+"&bizcode="+config.bizCode+"&temp="+abletodown;
+        let selectedDiffs=encodeURI(selectedDown);
+        window.location.href="/DDCMS/audit-stat!downloadAllSelectedDiff.action?diffList="+selectedDiffs+"&bizCode="+config.bizCode+"&temp="+abletodown;
         //window.location.href="/DDCMS/syn-log!downloadAllSelectedDiff.action?"+text;
       }
     }
@@ -338,7 +340,6 @@ class  AuditSync extends Component {
 }
 
 handleReset = () => {
-  const forms=this.form;
  this.form.resetFields();
  this.setState({queryCity:'',startDate:'',endDate:'',  diffCodeChange:'',handleCpyChange:'',containZero:false},()=>{this.fetch()});
 }
@@ -362,8 +363,6 @@ handleSearch=(e) => {
 exportMes=(e)=>{
 
    const {config} = this.props;
-   let synId='';
-   let downflag='';
   //  let text="auditDate="+this.state.startDate
   //  +"&endDate="+this.state.endDate
   //  +"&cityCode="+this.state.queryCity
@@ -400,7 +399,8 @@ this.setState({ selectedRowKeys });
 
 
   render(){
-    const {citys,diffCodes,handleCompanys,selectedRowKeys}=this.state;
+    const {selectedRowKeys,config}=this.state;
+    const {id}=this.props;
     const rowSelection = {
      selectedRowKeys,
      onChange: this.onSelectChange,
@@ -412,7 +412,7 @@ this.setState({ selectedRowKeys });
         handelRequestDownload={this.handelRequestDownload} />
         <Table rowKey="DID"  rowSelection={rowSelection} columns={this.state.columns}
             loading={this.state.loading} dataSource={this.state.data}   pagination={this.state.pagination}  scroll={{x:'250%',y:450}} size="middle"/>
-        <ReviewCheck ref={(ref) => this.review= ref} refresh={this.fetch}/>
+        <ReviewCheck ref={(ref) => this.review= ref} refresh={this.fetch} id={id}/>
         <SynCheck ref={(ref) => this.syncheck = ref}  refresh={this.fetch} />
         <DownloadApplay ref={(ref) => this.dowloadCheck =ref} refresh={this.fetch} />
       </div>

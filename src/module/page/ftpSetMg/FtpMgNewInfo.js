@@ -35,7 +35,7 @@ class  FtpInfoModal extends Component {
   render() {
     const {getFieldDecorator} = this.props.form;
     const {netList}=this.state;
-    const {record,action,bizList,deptList,auditTypeList,auditScopeList,taskTypeList,dataTypeList} =this.props;
+    const {record,auditTypeList,auditScopeList,dataTypeList} =this.props;
     return (
       <div>
             <Form>

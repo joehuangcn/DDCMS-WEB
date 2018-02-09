@@ -1,5 +1,5 @@
 import React,{Component} from "react";
-import { Form, Input,Modal,Select,DatePicker } from 'antd';
+import { Form, Input,Modal,DatePicker } from 'antd';
 import { ajaxUtil} from '../../../util/AjaxUtils';
 import UploadFile from '../../../component/uploadFile/UploadFile';
 import uuid from 'node-uuid';
@@ -16,7 +16,7 @@ class BizAuditFormModal extends Component {
     const { getFieldDecorator} = this.props.form;
     // const record = this.props.record;
     // const action = this.props.action;
-    const {auditTypeList}=this.props;
+    // const {auditTypeList}=this.props;
     const file1="batchfile";
     const url="audit-rule!uploadFile.action";
     const deleteUrl="audit-rule!deletedFile.action";

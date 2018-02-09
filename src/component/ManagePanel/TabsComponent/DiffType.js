@@ -1,6 +1,5 @@
 import React,{Component} from 'react';
-import {Select,DatePicker,Form,Button,Icon,Table,Checkbox,Row, Col } from 'antd';
-import {Tooltip, Legend,PieChart, Pie,Cell} from 'recharts';
+import {Select,DatePicker,Form,Button,Table,Row, Col } from 'antd';
 import ReactEcharts from 'echarts-for-react';
 import {ajaxUtil} from '../../../util/AjaxUtils';
 const FormItem=Form.Item;
@@ -171,7 +170,7 @@ class  DiffType extends Component {
      let queryCity=values.queryCity===undefined?'':values.queryCity;
      let auditDate=values.auditDate===undefined||values.auditDate==null?'':values.auditDate.format('YYYY-MM-DD');
      let obDateDate=values.obDateDate===undefined||values.obDateDate==null?'':values.obDateDate.format('YYYY-MM-DD');
-     this.setState({queryCity,auditDate,obDateDate},()=>{this.fetch()});
+     this.setState({queryCity,auditDate,obDateDate},()=>{this.fetch();this.getPieFetch();});
   })
 }
 

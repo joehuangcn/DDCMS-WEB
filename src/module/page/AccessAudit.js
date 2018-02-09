@@ -111,10 +111,11 @@ class AccessAudit extends Component {
      });
    }
 
-   setOk=() =>{
-     ajaxUtil("urlencoded", "data-gather!test.action","",this,(data,that)=>{
-     })
-   }
+  //  setOk=() =>{
+  //      <Button type="primary" onClick={this.setOk}>完成</Button>
+  //    ajaxUtil("urlencoded", "data-gather!test.action","",this,(data,that)=>{
+  //    })
+  //  }
 
 
   render() {
@@ -140,7 +141,6 @@ class AccessAudit extends Component {
                  onSearch={this.search}
             />
             <Button onClick={this.reflash}><Icon type="sync" />刷新</Button>
-            <Button type="primary" onClick={this.setOk}>完成</Button>
       </div>
       <Table rowKey={()=>uuid.v1()} columns={columns}  loading={this.state.loading} dataSource={this.state.data}  onChange={this.handleTableChange} pagination={this.state.pagination}/>
     </div>)

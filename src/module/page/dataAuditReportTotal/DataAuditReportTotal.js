@@ -1,5 +1,5 @@
 import React,{Component} from 'react'
-import { Table,Tabs,Input, Button,Icon,Select,DatePicker } from 'antd';
+import { Table,Tabs,Input, Button,Icon,Select,DatePicker,Popconfirm,Row,Col} from 'antd';
 import {ajaxUtil} from '../../../util/AjaxUtils';
 import DataSum from './DataSum'
 import DataDetail from './DataDetail'

@@ -73,10 +73,10 @@ import Tabs from '../../component/ManagePanel/Tabs';
       this.getInitProps(props);
    }
    render() {
-       const {config,permission,active} = this.state;
+       const {config,permission,active,id} = this.state;
        return (
            <div className="body-content" style={{height:'100%'}}>
-               <Tabs config={config} permission={permission} active={active}/>
+               <Tabs config={config} permission={permission} active={active} id={id}/>
            </div>
        );
 

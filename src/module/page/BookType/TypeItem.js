@@ -1,7 +1,6 @@
 import React,{Component} from "react";
-import { Form, Input, Button,Modal,Upload ,Icon,Radio } from 'antd';
+import { Form, Input,Modal ,Radio } from 'antd';
 import { ajaxUtil} from '../../../util/AjaxUtils';
-import UploadFile from '../../../component/uploadFile/UploadFile';
 import uuid from 'node-uuid';
 
 
@@ -16,7 +15,6 @@ class BizAuditFormModal extends Component {
     render () {
         const { getFieldDecorator} = this.props.form;
         const record = this.props.record;
-        const action = this.props.action;
         return(
             <div>
                 <Form>
@@ -96,12 +94,10 @@ export default  class TypeItem extends Component {
             if (err) {
                 return;
             }
-  
+
             this.setState({
                 confirmLoading:true,
             });
-            let inFilterBid="";
-            let inFilterName="";
             let bid=this.state.record.bid?this.state.record.bid:'';
 
             const text="dictionaryType.dicTypeCode="+values.dictionaryType.dicTypeCode
@@ -140,7 +136,7 @@ export default  class TypeItem extends Component {
 
     handleCancel = (e) => {
         this.setState({visible:false});
-        const form1= this.form;
+        // const form1= this.form;
     }
     afterClose = () => {
         this.form.resetFields();

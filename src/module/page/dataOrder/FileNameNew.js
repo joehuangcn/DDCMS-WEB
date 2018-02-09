@@ -1,5 +1,5 @@
 import React,{Component} from 'react'
-import { Form, Input,Modal ,Select,Row,Col,Radio} from 'antd';
+import { Form, Input,Modal ,Select,Row,Col} from 'antd';
 import { ajaxUtil} from '../../../util/AjaxUtils';
 const FormItem = Form.Item;
 const {Option} = Select;
@@ -27,7 +27,7 @@ class  FileNameInfoModal extends Component {
                           </Select>
           break;
           case 'textarea':
-              renderSome= <Input placeholder={info} type="textarea"  rows={rows}/>;
+              renderSome= <Input placeholder={info} type="textarea"  rows={rows}/>; break;
       default:break;
     }
     return (

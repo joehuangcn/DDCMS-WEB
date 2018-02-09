@@ -1,7 +1,6 @@
 import React,{Component} from "react";
-import { Form, Input, Button,Modal,Upload ,Icon,Radio } from 'antd';
+import { Form, Input,Modal } from 'antd';
 import { ajaxUtil} from '../../../util/AjaxUtils';
-import UploadFile from '../../../component/uploadFile/UploadFile';
 import uuid from 'node-uuid';
 
 
@@ -16,7 +15,7 @@ class BizAuditFormModal extends Component {
     render () {
         const { getFieldDecorator} = this.props.form;
         const record = this.props.record;
-        const action = this.props.action;
+        // const action = this.props.action;
         return(
             <div>
                 <Form>
@@ -69,21 +68,19 @@ export default  class TypeItem extends Component {
             if (err) {
                 return;
             }
-        
+
 
             this.setState({
                 confirmLoading:true,
             });
             let inFilterBid="";
             let inFilterName="";
-            let bid=this.state.record.bid?this.state.record.bid:'';
+            let nid=this.state.record.nid?this.state.record.nid:'';
 
             const text="notice.title="+values.notice.title
                 +"&notice.content="+values.notice.content
                 +"&act="+this.state.action
-                +"&notice.bid="+bid
-                +"&inFilterBid="+inFilterBid
-                +"&inFilterName="+inFilterName;
+                +"&notice.nid="+nid;
             ajaxUtil("urlencoded","notice!save.action",text,this,(data,that) => {
                 let status=data.success;
                 let message= data.message;
@@ -102,7 +99,7 @@ export default  class TypeItem extends Component {
                         content: message,
                     });
                 }
-
+              this.props.reflash();
             });
 
         });
@@ -110,7 +107,7 @@ export default  class TypeItem extends Component {
 
     handleCancel = (e) => {
         this.setState({visible:false});
-        const form1= this.form;
+        // const form1= this.form;
     }
     afterClose = () => {
         this.form.resetFields();

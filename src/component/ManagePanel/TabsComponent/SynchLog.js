@@ -1,12 +1,9 @@
 import React,{Component} from 'react'
-import { Table,Tabs,Input, Button,Icon,Select,DatePicker,message ,Form,Dropdown,Menu,Checkbox} from 'antd';
+import { Table,Tabs, Button,Icon,Select,DatePicker,message ,Form,Dropdown,Menu,Checkbox} from 'antd';
 import { Row, Col } from 'antd';
 import { Modal } from 'antd';
 import {ajaxUtil} from '../../../util/AjaxUtils';
-const {RangePicker} = DatePicker;
 const FormItem=Form.Item;
-const Option = Select.Option;
-const TabPane = Tabs.TabPane;
 class SynchLog extends Component {
   constructor(props) {
     super(props);
@@ -76,25 +73,29 @@ class SynchLog extends Component {
   }
 //successNum failNum
   renderDow =(text,record,index) =>{
+    const {permission}=this.props;
     let value=record.synId+"-successNum";
     const {abletodown}=this.state;
-    if (text==='') {
-      return '';
-    }else if (abletodown==true) {
+    let havePerm=(permission.data.indexOf('synlogDownload')===-1?false:true);
+    if (text===''||text==='0') {
+      return text;
+    }else if (havePerm===true||abletodown===true) {
       return <Checkbox onChange={this.onCheckChange} value={value}>{text}<Icon type="download" /></Checkbox>
     }else {
-      return "请申请下载权限";
+      return text;
     }
   }
   renderDowFail=(text,record,index) =>{
+    const {permission}=this.props;
     let value=record.synId+"-failNum";
     const {abletodown}=this.state;
-    if (text==='') {
-      return '';
-    }else if (abletodown==true) {
+    let havePerm=(permission.data.indexOf('synlogDownload')===-1?false:true);
+    if (text===''||text==='0') {
+      return text;
+    }else if (havePerm===true||abletodown===true) {
       return <Checkbox onChange={this.onCheckChange} value={value}>{text}<Icon type="download" style={{color:'blue'}}/></Checkbox>
     }else {
-      return "请申请下载权限";
+      return text;
     }
   }
 
@@ -228,6 +229,14 @@ handelRequestDownload=()=>{
      if (params.page>1) {
        page=(params.page-1)*10;
      }
+     let sort='synDate';
+     if (typeof(params.sortField) !== "undefined" ) {
+       sort=params.sortField;
+     }
+     let dir='DESC';
+     if (typeof(params.sortOrder) !== "undefined" ) {
+       dir=(params.sortOrder=="descend"?"desc":"asc");
+     }
      const {config} = this.props;
      const text="startDate="+this.state.startDate
      +"&endDate="+this.state.endDate
@@ -236,8 +245,8 @@ handelRequestDownload=()=>{
      +"&auditType="+config.auditType
      +"&dataScope="+config.dataScope
      +"&dataType="+config.dataType
-    //  +"&sort="+config.sort
-    //  +"&dir="+config.dir
+     +"&sort="+sort
+     +"&dir="+dir
      +"&start="+page+"&limit=10";
      ajaxUtil("urlencoded","syn-log!getSynLogJsonList.action",text,this,(data,that)  => {
        const pagination = that.state.pagination;

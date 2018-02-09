@@ -152,7 +152,14 @@ class StatReportGridXJ extends Component {
        page=(params.page-1)*10;
      }
     //  const {config} = this.props;
-
+    let sort='OBTAINDATATIME';
+    if (typeof(params.sortField) !== "undefined" ) {
+      sort=params.sortField;
+    }
+    let dir='DESC';
+    if (typeof(params.sortOrder) !== "undefined" ) {
+      dir=(params.sortOrder=="descend"?"desc":"asc");
+    }
     const {config}=this.state;
      const text="startDate="+this.state.startDate
      +"&endDate="+this.state.endDate
@@ -163,7 +170,7 @@ class StatReportGridXJ extends Component {
      +"&dataType="+config.dataType
     //  +"&sort="+config.sort
     //  +"&dir="+config.dir
-     +"&start="+page+"&limit=10";
+     +"&start="+page+"&limit=10&sort="+sort+"&dir="+dir;
 
 
      ajaxUtil("urlencoded","audit-stat!getAuditStatListOfJson.action",text,this,(data,that)  => {
@@ -197,8 +204,7 @@ class StatReportGridXJ extends Component {
 }
 
 exportMes=(e)=>{
-
-   const {config} = this.state;
+   const {config,pagination} = this.state;
    let synId='';
    let downflag='';
    let text="startDate="+this.state.startDate
@@ -215,11 +221,13 @@ exportMes=(e)=>{
         message.warning("请选择需要导出的列");
      }else{
        text+="&flag=selected&ids="+this.state.selectedRowKeys;
+       console.log(text);
       //  this.help(text);
        window.location.href="/DDCMS/audit-stat!loadXLS.action?"+text;
      }
    }else if (e.key==='2') {
       text+="&flag=all&ids=";
+       console.log(text);
       // this.help(text);
       window.location.href="/DDCMS/audit-stat!loadXLS.action?"+text;
    }

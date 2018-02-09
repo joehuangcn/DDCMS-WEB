@@ -94,6 +94,7 @@ class DataDetail extends Component{
   expandedRowRender=(record)=>{
     const {dynColumns}=this.state;
       let flatArray=[];
+      let data=[];
     if (dynColumns!==undefined) {
         let dynColumnsList=dynColumns.split(",");
         for (var i = 0; i < dynColumnsList.length; i++) {
@@ -107,10 +108,11 @@ class DataDetail extends Component{
           }
         }
     }
+    data.push(record);
     return (
       <Table rowKey={()=>(uuid.v1())}
       columns={flatArray}
-       dataSource={this.state.data}
+       dataSource={data}
        pagination={false}
    />
     )
@@ -158,18 +160,16 @@ exportMes=(e)=>{
    let text="startDate="+startDate
    +"&endDate="+endDate
    +"&cityCode="+cityCode
-   +"&bizCodeParam="+bizCodeParams
+
    if (e.key==='1') {
      if (this.state.selectedRowKeys.length<=0) {
         message.warning("请选择需要导出的列");
      }else{
-       text+="&flag=selected&bizeScopes="+this.state.selectedRowKeys;
-      //  this.help(text);
+       text+="&flag=selected&bizCodeParams="+this.state.selectedRowKeys;
        window.location.href="/DDCMS/audit-statall!loadDetailXLS.action?"+text;
      }
    }else if (e.key==='2') {
-      text+="&flag=all&bizeScopes=";
-      // this.help(text);
+      text+="&flag=all&bizCodeParams="+bizCodeParams;
       window.location.href="/DDCMS/audit-statall!loadDetailXLS.action?"+text;
    }
  }

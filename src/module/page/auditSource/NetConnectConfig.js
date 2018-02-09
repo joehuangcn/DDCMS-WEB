@@ -183,9 +183,11 @@ class NetConnectConfig extends Component {
 
     // 打开新建窗口
     handleModal= () => {
-      const {auditType,dataScope,dataType}=this.state;
+      const {auditType,dataScope,dataType,bizCode}=this.state;
       if (auditType===''||auditType===undefined||dataScope===''||dataScope===undefined||dataType===''||dataType===undefined) {
         message.error('稽核类型,稽核范围,数据类型不能为空,请先选择！！！');
+      }else if(bizCode==='') {
+        message.error("请先选择左边需要配置的业务");
       }else{
         this.newbiz.show();
       }

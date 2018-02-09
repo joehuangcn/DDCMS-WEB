@@ -1,5 +1,5 @@
 import React,{Component} from "react";
-import { Form, Input, Button,Modal,Upload ,Icon,Select,Row,Col,InputNumber,Radio,Switch,Tabs,DatePicker,TreeSelect} from 'antd';
+import { Form, Input, Button,Modal,Select,Row,Col,Radio,Tabs,DatePicker,TreeSelect} from 'antd';
 import { ajaxUtil} from '../../../util/AjaxUtils';
 import UploadFile from '../../../component/uploadFile/UploadFile';
 import uuid from 'node-uuid';

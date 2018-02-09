@@ -1,5 +1,5 @@
 import React,{Component} from 'react'
-import { Form, Input,Modal,Select,Row,Col,Radio} from 'antd';
+import { Form, Input,Modal,Select,Row,Col} from 'antd';
 import { ajaxUtil} from '../../../util/AjaxUtils';
 import uuid from 'node-uuid';
 const FormItem = Form.Item;
@@ -79,8 +79,7 @@ class  DiffInfoModal extends Component {
   render() {
     const {getFieldDecorator} = this.props.form;
     const {netList}=this.state;
-    const {record,action,bizList,deptList,auditTypeList,auditScopeList,taskTypeList,dataTypeList,diffTypeList,companyList} =this.props;
-    const ddd=this.handleRenderTab("input",formItemLayout,"差异代码","diffMethod.diffCode",true,record.diffCode,[],0,'');
+    const {record,auditTypeList,auditScopeList,dataTypeList,diffTypeList,companyList} =this.props;
     const inputFormItemLayout = {
       labelCol: { span: 8 },
       wrapperCol: { span: 6 },

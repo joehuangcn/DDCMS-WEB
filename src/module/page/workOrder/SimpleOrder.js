@@ -1,5 +1,5 @@
 import React,{Component} from "react";
-import { Form, Input, Button,Modal,Upload ,Icon,Select,Row,Col,InputNumber,Radio,Switch,Tabs,DatePicker,TreeSelect} from 'antd';
+import { Form, Input,Modal,Select,Row,Col,Radio,Tabs,DatePicker,TreeSelect} from 'antd';
 import { ajaxUtil} from '../../../util/AjaxUtils';
 import UploadFile from '../../../component/uploadFile/UploadFile';
 import uuid from 'node-uuid';
@@ -7,7 +7,6 @@ import Moment from 'moment';
 const FormItem = Form.Item;
 const Option=Select.Option;
 const RadioGroup = Radio.Group;
-const TabPane = Tabs.TabPane;
 const { TextArea } = Input;
 const formItemLayout = {
   labelCol: { span: 6 },

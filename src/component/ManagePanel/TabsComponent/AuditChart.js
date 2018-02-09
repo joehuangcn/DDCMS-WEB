@@ -2,7 +2,7 @@ import React,{Component} from 'react';
 import {Select,DatePicker,Form,Button,Icon} from 'antd';
 import { Row, Col } from 'antd';
 import {ajaxUtil} from '../../../util/AjaxUtils';
-import {ComposedChart, Line, Area, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend,PieChart, Pie,Cell} from 'recharts';
+import {ComposedChart, Line, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend} from 'recharts';
 const FormItem=Form.Item;
 const Option = Select.Option;
 const showGenerMap=[

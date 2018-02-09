@@ -1,8 +1,7 @@
 import React,{Component} from "react";
-import { Form, Input, Button,Modal,Upload ,Icon,Radio ,Select} from 'antd';
+import { Form, Input,Modal} from 'antd';
 import {TwitterPicker} from 'react-color';
 import { ajaxUtil} from '../../../util/AjaxUtils';
-import UploadFile from '../../../component/uploadFile/UploadFile';
 import uuid from 'node-uuid';
 
 
@@ -34,9 +33,8 @@ class BizAuditFormModal extends Component {
     render () {
         const { getFieldDecorator} = this.props.form;
         const record = this.props.record;
-        const action = this.props.action;
         const {color} =this.props;
-        const {displayColorPicker,colorValue}=this.state;
+        const {colorValue}=this.state;
 
         return(
             <div>
@@ -104,7 +102,7 @@ export default  class LevItem extends Component {
             if (err) {
                 return;
             }
-      
+
 
             this.setState({
                 confirmLoading:true,

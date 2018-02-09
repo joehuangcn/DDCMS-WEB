@@ -1,17 +1,10 @@
 import React,{Component} from 'react'
-import { Form, Input, Button,Modal,Upload ,Icon,Select,Row,Col,InputNumber,Radio,Switch} from 'antd';
+import { Form, Input,Modal,Select,Row,Col,Radio} from 'antd';
 import { ajaxUtil} from '../../../util/AjaxUtils';
-import UploadFile from '../../../component/uploadFile/UploadFile';
-import uuid from 'node-uuid';
-import Moment from 'moment';
 const FormItem = Form.Item;
 const {Option} = Select;
 const RadioGroup = Radio.Group;
 const { TextArea } = Input;
-const formItemLayout = {
-  labelCol: { span: 10 },
-  wrapperCol: { span: 16 },
-};
 const passOrNotList = [
   {dicCode:'0',dicName:'同意上传'},
   {dicCode:'1',dicName:'不同意上传'}
@@ -122,7 +115,7 @@ class ReviewCheck extends Component{
     });
   }
   showModal =(action,record,config) => {
-  
+
    this.setState({
      visible:true,
      record:record,
@@ -141,16 +134,18 @@ class ReviewCheck extends Component{
         confirmLoading:true,
       });
       const {config,record}=this.state;
+      const {id}=this.props;
+      console.log(id);
       const text="synReviewLog.bizName="+values.synReviewLog.bizName
       +"&synReviewLog.diffCode="+values.synReviewLog.diffCode
       +"&synReviewLog.auditTime="+values.synReviewLog.auditTime
       +"&synReviewLog.diffNum="+values.synReviewLog.diffNum
       +"&synReviewLog.passOrNot="+values.synReviewLog.passOrNot
       +"&synReviewLog.reviewInfo="+(values.synReviewLog.reviewInfo===undefined?"":values.synReviewLog.reviewInfo)
-      +"&synReviewLog.statu="+values.synReviewLog.statu
       +"&synReviewLog.did="+record.DID
       +"&synReviewLog.auditType="+config.auditType
-      +"&synReviewLog.auditScope="+config.dataScope;
+      +"&synReviewLog.auditScope="+config.dataScope
+      +"&resid="+id;
       ajaxUtil("urlencoded","syn!synReview.action",text,this,(data,that) => {
         let status=data.success;
         let message= data.message;

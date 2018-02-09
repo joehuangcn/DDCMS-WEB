@@ -297,7 +297,6 @@ class  BusinessInfoList extends Component {
       +"&busiJoin.rate="+values.busiJoin.rate
       +"&busiJoin.auditTime="+values.busiJoin.auditTime
       +"&busiJoin.progress="+values.busiJoin.progress
-      +"&busiJoin.auditTime="+values.busiJoin.auditTime
       +"&busiJoin.auditType="+values.busiJoin.auditType
       +"&busiJoin.type="+values.busiJoin.type
       +"&busiJoin.mark="+(values.busiJoin.mark===undefined?"":values.busiJoin.mark)

@@ -72,7 +72,7 @@ class NetSetMg extends Component{
       <div style={{ background: '#ECECEC'}}>
       <Row gutter={8}>
         <Col span={8}>
-          <Card title="选择业务">
+          <Card title="选择业务" style={{maxHeight:500, overflowY:'auto'  }}>
               <BusinessSelect changebizNode={(...title) =>this.changebizNode(...title)}/>
            </Card>
         </Col>

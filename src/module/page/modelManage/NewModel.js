@@ -89,7 +89,7 @@ handleSelectParentCode=(value, label, extra) =>{
                     <FormItem {...formItemLayout} label="排序位置">
                         {getFieldDecorator('module.displayOrder',{
                             rules:[{}],
-                            initialValue:record.displayOrder?record.displayOrder:''
+                            initialValue:record.displayorder?record.displayorder:''
                         })(
                             <Input placeholder="请输入排序号" />
                         )}

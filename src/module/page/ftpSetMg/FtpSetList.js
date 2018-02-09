@@ -178,7 +178,12 @@ class FtpSetList extends Component {
   }
   }
   handleModal= () =>{
+    const {bizCode}=this.state;
+    if (bizCode==='') {
+        message.error("请先选择业务！！！");
+    }else{
     this.newbiz.show();
+    }
   }
 
   render(){

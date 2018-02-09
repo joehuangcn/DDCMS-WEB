@@ -1,17 +1,11 @@
 import React,{Component} from 'react'
-import { Form, Input, Button,Modal,Upload ,Icon,Select,Row,Col,InputNumber,Radio,Switch,Divider} from 'antd';
+import { Form, Input,Modal ,Select,Row,Col,Radio,Divider} from 'antd';
 import { ajaxUtil} from '../../../util/AjaxUtils';
 import UploadFile from '../../../component/uploadFile/UploadFile';
-import uuid from 'node-uuid';
-import Moment from 'moment';
 const FormItem = Form.Item;
 const {Option} = Select;
 const RadioGroup = Radio.Group;
 const { TextArea } = Input;
-const formItemLayout = {
-  labelCol: { span: 10 },
-  wrapperCol: { span: 16 },
-};
 const fileList = [
   {dicCode:'all',dicName:'上传全部此类差异'},
   {dicCode:'file',dicName:'上传指定文件'}
@@ -54,7 +48,6 @@ class  NetInfoModal extends Component {
          renderSome
       )}
      </FormItem>
-
    );
   }
 

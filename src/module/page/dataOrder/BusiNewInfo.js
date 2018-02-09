@@ -1,5 +1,5 @@
 import React,{Component} from 'react'
-import { Form, Input,Modal ,Select,Row,Col,Radio,Divider,Checkbox,message} from 'antd';
+import { Form, Input,Modal ,Select,Row,Col,Divider,Checkbox,message} from 'antd';
 import { ajaxUtil} from '../../../util/AjaxUtils';
 import uuid from 'node-uuid';
 const FormItem = Form.Item;
@@ -10,10 +10,7 @@ const formItemLayout = {
   labelCol: { span: 6 },
   wrapperCol: { span: 16 },
 };
-const needAuditList = [
-  {dicCode:'N',dicName:'不需要'},
-  {dicCode:'Y',dicName:'需要'},
-];
+
 const operNumList = [
   {fieldCode:'0',fieldName:'剔除手机号码'},
   {fieldCode:'1',fieldName:'剔除固定号码'},
@@ -79,11 +76,8 @@ class  DiffInfoModal extends Component {
          rules:[{ required:required, message:label+'不能为空',}],
          initialValue:initValue?initValue:""
        })
-       (
-         renderSome
-      )}
+       (renderSome)}
      </FormItem>
-
    );
   }
 
@@ -96,7 +90,7 @@ class  DiffInfoModal extends Component {
          initialValue:initValue?initValue.split(','):[]
        })
        (
-         <Select mode="multiple"  placeholder="请选择" style={{ width: 120 }} >
+         <Select mode="multiple"  placeholder="请选择" style={{ width: 130 }} >
             {SourceList.map(d=> <Option key={d.fieldCode} value={d.fieldCode}>{d.fieldName}</Option>)}
          </Select>
       )}
@@ -109,7 +103,7 @@ class  DiffInfoModal extends Component {
   render() {
     const {getFieldDecorator} = this.props.form;
     const {netList,choiceWay}=this.state;
-    const {record,action,bizList,deptList,auditTypeList,auditScopeList,taskTypeList,dataTypeList,diffTypeList,companyList,busNetList} =this.props;
+    const {record,auditScopeList,busNetList} =this.props;
     const inputFormItemLayout = {
       labelCol: { span: 10 },
       wrapperCol: { span: 14 },
@@ -189,14 +183,16 @@ class  DiffInfoModal extends Component {
              </Col>
              </Row>
              <Row gutter={4}>
-             <Col span={8}>
-               {this.handleRenderTab("select",inputFormItemLayout,"空字段选择","emptySelectType ",false,record.emptySelectType,busNetList,0,'')}
+             <Col span={12}>
+                 {this.handleRenderMutiSelect(inputFormItemLayout,"空字段选择","emptySelectType",false,record.emptySelectType,busNetList)}
              </Col>
-             <Col span={8}>
-               {this.handleRenderTab("input",inputFormItemLayout,"空字段转换","emptyTrans",false,record.emptyTrans,[],0,'')}
+             <Col span={12}>
+               {this.handleRenderTab("input",inputFormItemLayout,"空字段转换","emptyTrans",false,record.emptyTrans,[],0,'填写相对应的转换值,逗号分隔')}
              </Col>
-             <Col span={8}>
-               {this.handleRenderTab("input",inputFormItemLayout,"字段顺序转换","dataRankRule",false,record.dataRankRule,[],0,'')}
+             </Row>
+             <Row>
+             <Col span={12}>
+               {this.handleRenderTab("input",inputFormItemLayout,"字段顺序转换","dataRankRule",false,record.dataRankRule,[],0,'请填写以逗号为分隔符')}
              </Col>
              </Row>
              <Row gutter={2}>
@@ -362,6 +358,7 @@ class BusiNewInfo extends Component{
 
       +"&removeBlack="+values.removeBlack
       +"&removeLineBreak="+values.removeLineBreak
+      +"&emptySelectType="+(values.emptySelectType?values.emptySelectType:'')
       +"&emptyTrans="+values.emptyTrans
       +"&dataRankRule="+values.dataRankRule
       +"&updateCityOffset="+values.updateCityOffset

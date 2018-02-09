@@ -109,14 +109,14 @@ class SftpFormModal extends Component {
   render () {
     const { getFieldDecorator} = this.props.form;
     const record = this.props.record;
-    const action = this.props.action;
+    // const action = this.props.action;
     const file1="batchfile";
     const url="audit-rule!uploadFile.action";
     const deleteUrl="audit-rule!deletedFile.action";
-    const actions= {
-      action :'DDCMS/'+url,
-      muliple:true
-    }
+    // const actions= {
+    //   action :'DDCMS/'+url,
+    //   muliple:true
+    // }
     return(
       <div>
       <Form>
@@ -200,7 +200,7 @@ class SftpFileNew extends Component {
         let filename="";
         let filenameMd5="";
         const {action}=this.state;
-        let id=(this.state.record.num==undefined?'':this.state.record.num);
+        // let id=(this.state.record.num==undefined?'':this.state.record.num);
         let text="sftpfile.headline="+values.sftpfile.headline
         +"&sftpfile.sys="+values.sftpfile.sys
         +"&sftpfile.jufang="+values.sftpfile.jufang

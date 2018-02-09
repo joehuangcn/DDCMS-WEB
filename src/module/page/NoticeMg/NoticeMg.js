@@ -191,8 +191,8 @@ class NoticeMg extends Component {
                   <Option value="Title">公告标题</Option>
                 </Select>
                 <Search  placeholder="输入查询值"   style={{ width: 120 }}  onSearch={this.handleSearch} />
-                 <Table columns={this.state.columns}  loading={this.state.loading} dataSource= {this.state.data}   pagination={this.state.pagination} onChange={this.handleTableChange} />
-                <NoticeItem  ref={(ref) => this.newbiz=ref }/>
+                 <Table rowKey='nid' columns={this.state.columns}  loading={this.state.loading} dataSource= {this.state.data}   pagination={this.state.pagination} onChange={this.handleTableChange} />
+                <NoticeItem  ref={(ref) => this.newbiz=ref } reflash={this.reflash}/>
             </div>
         );
     }

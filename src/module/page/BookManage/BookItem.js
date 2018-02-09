@@ -1,7 +1,6 @@
 import React, { Component } from "react";
-import { Form, Input, Button, Modal, Upload, Icon, Radio, Select } from "antd";
+import { Form, Input, Modal, Radio, Select } from "antd";
 import { ajaxUtil } from "../../../util/AjaxUtils";
-import UploadFile from "../../../component/uploadFile/UploadFile";
 import uuid from "node-uuid";
 const { Option } = Select;
 
@@ -101,8 +100,6 @@ export default class BookItem extends Component {
       this.setState({
         confirmLoading: true
       });
-      let inFilterBid = "";
-      let inFilterName = "";
       let bid = this.state.record.bid ? this.state.record.bid : "";
       const text = "dictionary.dicCode="+values.dictionary.dicCode
       +"&dictionary.dicName="+values.dictionary.dicName
@@ -137,7 +134,6 @@ export default class BookItem extends Component {
 
   handleCancel = e => {
     this.setState({ visible: false });
-    const form1 = this.form;
   };
   afterClose = () => {
     this.form.resetFields();
