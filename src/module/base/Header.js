@@ -19,7 +19,7 @@ class Header extends Component {
                    type={this.props.collapsed ? 'menu-unfold' : 'menu-fold'}
                    onClick={this.props.onCollapse}
                  />
-                  <h2 style={title_style}>辽宁移动数据一致性管理系统</h2>
+                  <h2 style={title_style}>*****管理系统</h2>
                 </Row>
             </Row>
         )
